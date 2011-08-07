@@ -9,6 +9,11 @@
 #include <xpc/xpc.h>
 #include <assert.h>
 
+static void XPC_Calc_Service_process_request(xpc_object_t request, xpc_object_t reply)
+{
+    xpc_dictionary_set_string(reply, "message", "hello world");
+}
+
 static void XPC_Calc_Service_peer_event_handler(xpc_connection_t peer, xpc_object_t event) 
 {
 	xpc_type_t type = xpc_get_type(event);
@@ -25,6 +30,10 @@ static void XPC_Calc_Service_peer_event_handler(xpc_connection_t peer, xpc_objec
 	} else {
 		assert(type == XPC_TYPE_DICTIONARY);
 		// Handle the message.
+        xpc_object_t reply = xpc_dictionary_create_reply(event);
+        XPC_Calc_Service_process_request(event, reply);
+        xpc_connection_send_message(peer, reply);
+        xpc_release(reply);        
 	}
 }
 

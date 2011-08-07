@@ -13,7 +13,6 @@
 		EF8DAA3313EE163300FF10E9 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = EF8DAA3113EE163300FF10E9 /* Credits.rtf */; };
 		EF8DAA3613EE163300FF10E9 /* XPC_CalcAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8DAA3513EE163300FF10E9 /* XPC_CalcAppDelegate.m */; };
 		EF8DAA3913EE163400FF10E9 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF8DAA3713EE163400FF10E9 /* MainMenu.xib */; };
-		EF8DAA3C13EE163400FF10E9 /* XPC_Calc.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EF8DAA3A13EE163400FF10E9 /* XPC_Calc.xcdatamodeld */; };
 		EF8DAA4C13EE165600FF10E9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EF8DAA4A13EE165600FF10E9 /* InfoPlist.strings */; };
 		EF8DAA4F13EE165600FF10E9 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = EF8DAA4E13EE165600FF10E9 /* main.c */; };
 /* End PBXBuildFile section */
@@ -32,7 +31,6 @@
 		EF8DAA3413EE163300FF10E9 /* XPC_CalcAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XPC_CalcAppDelegate.h; sourceTree = "<group>"; };
 		EF8DAA3513EE163300FF10E9 /* XPC_CalcAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XPC_CalcAppDelegate.m; sourceTree = "<group>"; };
 		EF8DAA3813EE163400FF10E9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		EF8DAA3B13EE163400FF10E9 /* XPC_Calc.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = XPC_Calc.xcdatamodel; sourceTree = "<group>"; };
 		EF8DAA4613EE165600FF10E9 /* com.springsandstruts.XPC Calc Service.xpc */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "com.springsandstruts.XPC Calc Service.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF8DAA4913EE165600FF10E9 /* XPC Calc Service-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "XPC Calc Service-Info.plist"; sourceTree = "<group>"; };
 		EF8DAA4B13EE165600FF10E9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -103,7 +101,6 @@
 				EF8DAA3413EE163300FF10E9 /* XPC_CalcAppDelegate.h */,
 				EF8DAA3513EE163300FF10E9 /* XPC_CalcAppDelegate.m */,
 				EF8DAA3713EE163400FF10E9 /* MainMenu.xib */,
-				EF8DAA3A13EE163400FF10E9 /* XPC_Calc.xcdatamodeld */,
 				EF8DAA2913EE163300FF10E9 /* Supporting Files */,
 			);
 			path = "XPC Calc";
@@ -228,7 +225,6 @@
 			files = (
 				EF8DAA2F13EE163300FF10E9 /* main.m in Sources */,
 				EF8DAA3613EE163300FF10E9 /* XPC_CalcAppDelegate.m in Sources */,
-				EF8DAA3C13EE163400FF10E9 /* XPC_Calc.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,19 +394,6 @@
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		EF8DAA3A13EE163400FF10E9 /* XPC_Calc.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				EF8DAA3B13EE163400FF10E9 /* XPC_Calc.xcdatamodel */,
-			);
-			currentVersion = EF8DAA3B13EE163400FF10E9 /* XPC_Calc.xcdatamodel */;
-			path = XPC_Calc.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = EF8DAA1513EE163300FF10E9 /* Project object */;
 }

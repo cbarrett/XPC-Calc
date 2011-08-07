@@ -16,19 +16,10 @@
 		EF8DAA4C13EE165600FF10E9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EF8DAA4A13EE165600FF10E9 /* InfoPlist.strings */; };
 		EF8DAA4F13EE165600FF10E9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8DAA4E13EE165600FF10E9 /* main.m */; };
 		EF8DAA6013EE578800FF10E9 /* xpc-calc-service.xpc in Copy XPC Services */ = {isa = PBXBuildFile; fileRef = EF8DAA4613EE165600FF10E9 /* xpc-calc-service.xpc */; };
+		EFCF90BB13EF5549007E5F51 /* xpc-calc-service-hs.xpc in Copy XPC Services */ = {isa = PBXBuildFile; fileRef = EFEDB30D13EEFE6400430981 /* xpc-calc-service-hs.xpc */; };
 		EFEDB30713EE6EA200430981 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF8DAA2713EE163300FF10E9 /* Foundation.framework */; };
 		EFEDB31313EEFE6400430981 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EFEDB31113EEFE6400430981 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		EF8DAA5413EE38D800FF10E9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EF8DAA1513EE163300FF10E9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = EF8DAA4513EE165600FF10E9;
-			remoteInfo = "XPC Calc Service";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		EF8DAA5F13EE576E00FF10E9 /* Copy XPC Services */ = {
@@ -37,6 +28,7 @@
 			dstPath = Contents/XPCServices;
 			dstSubfolderSpec = 1;
 			files = (
+				EFCF90BB13EF5549007E5F51 /* xpc-calc-service-hs.xpc in Copy XPC Services */,
 				EF8DAA6013EE578800FF10E9 /* xpc-calc-service.xpc in Copy XPC Services */,
 			);
 			name = "Copy XPC Services";
@@ -45,6 +37,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		EF60B56413EF43F300B4D22E /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		EF60B56513EF453600B4D22E /* HsXPC.hs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HsXPC.hs; sourceTree = "<group>"; };
 		EF8DAA1E13EE163300FF10E9 /* XPC Calc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "XPC Calc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF8DAA2213EE163300FF10E9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		EF8DAA2513EE163300FF10E9 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -68,7 +62,6 @@
 		EFEDB31013EEFE6400430981 /* xpc-calc-service-hs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "xpc-calc-service-hs-Info.plist"; sourceTree = "<group>"; };
 		EFEDB31213EEFE6400430981 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EFEDB31413EEFE6400430981 /* xpc-calc-service-hs-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "xpc-calc-service-hs-Prefix.pch"; sourceTree = "<group>"; };
-		EFEDB31B13EF006800430981 /* Main.hs */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; path = Main.hs; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,8 +170,9 @@
 		EFEDB30E13EEFE6400430981 /* xpc-calc-service-hs */ = {
 			isa = PBXGroup;
 			children = (
-				EFEDB31B13EF006800430981 /* Main.hs */,
+				EF60B56413EF43F300B4D22E /* main.c */,
 				EFEDB30F13EEFE6400430981 /* Supporting Files */,
+				EF60B56513EF453600B4D22E /* HsXPC.hs */,
 			);
 			path = "xpc-calc-service-hs";
 			sourceTree = "<group>";
@@ -208,7 +202,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				EF8DAA5513EE38D800FF10E9 /* PBXTargetDependency */,
 			);
 			name = "XPC Calc";
 			productName = "XPC Calc";
@@ -314,7 +307,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ghc --make -o \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH/xpc-calc-service-hs\" \"$SRCROOT/xpc-calc-service-hs/Main.hs\"\n";
+			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"\nghc -c -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\" \"$SRCROOT/xpc-calc-service-hs/HsXPC.hs\"\nghc --make -no-hs-main -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\"  -o \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH/xpc-calc-service-hs\" \"$SRCROOT/xpc-calc-service-hs/HsXPC.hs\" \"$SRCROOT/xpc-calc-service-hs/main.c\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -337,14 +330,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		EF8DAA5513EE38D800FF10E9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = EF8DAA4513EE165600FF10E9 /* xpc-calc-service */;
-			targetProxy = EF8DAA5413EE38D800FF10E9 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		EF8DAA2B13EE163300FF10E9 /* InfoPlist.strings */ = {

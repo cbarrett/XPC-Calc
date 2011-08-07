@@ -18,7 +18,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    serviceConnection = xpc_connection_create("com.springsandstruts.xpc-calc.xpc-calc-service", dispatch_get_main_queue());
+    serviceConnection = xpc_connection_create("com.springsandstruts.xpc-calc.xpc-calc-service-hs", dispatch_get_main_queue());
     
     xpc_connection_set_event_handler(serviceConnection, ^(xpc_object_t event) {
         xpc_type_t type = xpc_get_type(event);
@@ -65,6 +65,8 @@
 
 - (IBAction)push:(id)sender
 {
+    
+#if 0
     if (![[inputTextField stringValue] isEqualToString:@""]) {
         xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
         xpc_dictionary_set_int64(message, "type", MessagePush);
@@ -75,6 +77,14 @@
         });
         xpc_release(message);
     }
+#else
+    xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_connection_send_message_with_reply(serviceConnection, message, dispatch_get_main_queue(), ^ (xpc_object_t reply) {
+        NSLog(@"%s", xpc_dictionary_get_string(reply, "message"));
+    });
+    xpc_release(message);
+#endif
+    
 }
 
 - (void)sendOperatorMessage:(int64_t)operator

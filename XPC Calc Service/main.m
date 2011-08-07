@@ -9,10 +9,19 @@
 #import <Foundation/Foundation.h>
 #include <xpc/xpc.h>
 #include <assert.h>
+#import "Shared.h"
 
-static void XPC_Calc_Service_process_request(xpc_object_t request, xpc_object_t reply)
-{    
-    xpc_dictionary_set_string(reply, "message", "hello world");
+NSMutableArray *stack = nil; 
+
+static xpc_object_t XPC_Calc_Service_NSArray_to_xpc_array(NSArray *inArray)
+{
+    xpc_object_t outArray = xpc_array_create(NULL, 0);
+    
+    for (NSNumber *boxedNum in inArray) {
+        xpc_array_set_int64(outArray, XPC_ARRAY_APPEND, [boxedNum integerValue]);
+    }
+    
+    return outArray;
 }
 
 static void XPC_Calc_Service_peer_event_handler(xpc_connection_t peer, xpc_object_t event) 
@@ -31,15 +40,32 @@ static void XPC_Calc_Service_peer_event_handler(xpc_connection_t peer, xpc_objec
 	} else {
 		assert(type == XPC_TYPE_DICTIONARY);
 		// Handle the message.
-        xpc_object_t reply = xpc_dictionary_create_reply(event);
-        XPC_Calc_Service_process_request(event, reply);
-        xpc_connection_send_message(peer, reply);
-        xpc_release(reply);        
+        
+        int64_t messageType = xpc_dictionary_get_int64(event, "type");
+        
+        if (messageType == MessagePush) {
+            xpc_object_t reply = xpc_dictionary_create_reply(event);
+            
+            [stack addObject:[NSNumber numberWithInteger:xpc_dictionary_get_int64(event, "num")]];
+            xpc_dictionary_set_value(reply, "stack", XPC_Calc_Service_NSArray_to_xpc_array(stack));
+            
+            xpc_connection_send_message(peer, reply);
+            xpc_release(reply);        
+        } else if (messageType == MessageOperator) {
+            xpc_object_t reply = xpc_dictionary_create_reply(event);
+            
+            xpc_connection_send_message(peer, reply);
+            xpc_release(reply);        
+        } else if (messageType == MessageClear) {
+            [stack removeAllObjects];
+        }
 	}
 }
 
 static void XPC_Calc_Service_event_handler(xpc_connection_t peer) 
 {
+    stack = [[NSMutableArray alloc] init];
+
 	// By defaults, new connections will target the default dispatch
 	// concurrent queue.
 	xpc_connection_set_event_handler(peer, ^(xpc_object_t event) {

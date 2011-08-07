@@ -8,10 +8,12 @@
 
 #import "XPC_CalcAppDelegate.h"
 #import <xpc/xpc.h>
+#import "Shared.h"
 
 @implementation XPC_CalcAppDelegate
 
-@synthesize messageTextField;
+@synthesize stackTextView;
+@synthesize inputTextField;
 @synthesize window;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -51,14 +53,69 @@
     serviceConnection = nil;
 }
 
-- (IBAction)getMessage:(id)sender
+- (void)setStack:(xpc_object_t)stack
+{
+    NSMutableString *stackString = [NSMutableString string];
+    for (size_t i = 0; i < xpc_array_get_count(stack); i++) {
+        int64_t num = xpc_array_get_int64(stack, i);
+        [stackString appendFormat:@"%li\n", num];
+    }
+    [[self stackTextView] setString:stackString];
+}
+
+- (IBAction)push:(id)sender
+{
+    if (![[inputTextField stringValue] isEqualToString:@""]) {
+        xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
+        xpc_dictionary_set_int64(message, "type", MessagePush);
+        xpc_dictionary_set_int64(message, "num", [inputTextField integerValue]);
+        xpc_connection_send_message_with_reply(serviceConnection, message, dispatch_get_main_queue(), ^ (xpc_object_t reply) {
+            [self setStack:xpc_dictionary_get_value(reply, "stack")];
+            [[self inputTextField] setStringValue:@""];
+        });
+        xpc_release(message);
+    }
+}
+
+- (void)sendOperatorMessage:(int64_t)operator
 {
     xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_dictionary_set_int64(message, "type", MessageOperator);
+    xpc_dictionary_set_int64(message, "op", operator);
     xpc_connection_send_message_with_reply(serviceConnection, message, dispatch_get_main_queue(), ^ (xpc_object_t reply) {
-        const char *messageCStr = xpc_dictionary_get_string(reply, "message");
-        NSString *messageString = [NSString stringWithUTF8String:messageCStr];
-        [[self messageTextField] setStringValue:messageString];
+        [self setStack:xpc_dictionary_get_value(reply, "stack")];
     });
+    xpc_release(message);
+
+}
+
+- (IBAction)add:(id)sender
+{
+    [self sendOperatorMessage:OperatorAdd];
+}
+
+- (IBAction)subtract:(id)sender
+{
+    [self sendOperatorMessage:OperatorSub];
+}
+
+- (IBAction)multiply:(id)sender
+{
+    [self sendOperatorMessage:OperatorMul];
+}
+
+- (IBAction)divide:(id)sender
+{
+    [self sendOperatorMessage:OperatorDiv];
+}
+
+- (IBAction)clear:(id)sender
+{
+    xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_dictionary_set_int64(message, "type", MessageOperator);
+    xpc_connection_send_message(serviceConnection, message);
+    [[self stackTextView] setString:@""];
+    xpc_release(message);
 }
     
 @end

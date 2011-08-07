@@ -15,4 +15,11 @@ enum {
     MessageClear
 };
 
+enum {
+    OperatorAdd,
+    OperatorSub,
+    OperatorMul,
+    OperatorDiv
+};
+
 #endif

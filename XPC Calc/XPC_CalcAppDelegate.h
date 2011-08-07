@@ -11,13 +11,19 @@
 
 @interface XPC_CalcAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
-    NSTextField *messageTextField;
+    NSTextField *inputTextField;
     xpc_connection_t serviceConnection;
+    NSTextView *stackTextView;
 }
-
-@property (assign) IBOutlet NSTextField *messageTextField;
+@property (assign) IBOutlet NSTextView *stackTextView;
+@property (assign) IBOutlet NSTextField *inputTextField;
 @property (assign) IBOutlet NSWindow *window;
 
-- (IBAction)getMessage:(id)sender;
+- (IBAction)push:(id)sender;
+- (IBAction)add:(id)sender;
+- (IBAction)subtract:(id)sender;
+- (IBAction)multiply:(id)sender;
+- (IBAction)divide:(id)sender;
+- (IBAction)clear:(id)sender;
 
 @end

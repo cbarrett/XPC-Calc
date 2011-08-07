@@ -53,9 +53,30 @@ static void XPC_Calc_Service_peer_event_handler(xpc_connection_t peer, xpc_objec
             xpc_release(reply);        
         } else if (messageType == MessageOperator) {
             xpc_object_t reply = xpc_dictionary_create_reply(event);
+            int64_t op = xpc_dictionary_get_int64(event, "op");
+            
+            if ([stack count] >= 2) {
+                NSInteger rhs = [[stack objectAtIndex:[stack count] - 1] integerValue];
+                NSInteger lhs = [[stack objectAtIndex:[stack count] - 2] integerValue];
+                
+                [stack removeObjectAtIndex:[stack count] - 1];
+                [stack removeObjectAtIndex:[stack count] - 1];
+                
+                if (op == OperatorAdd) {
+                    [stack addObject:[NSNumber numberWithInteger:rhs + lhs]];
+                } else if (op == OperatorSub) {
+                    [stack addObject:[NSNumber numberWithInteger:rhs - lhs]];
+                } else if (op == OperatorMul) {
+                    [stack addObject:[NSNumber numberWithInteger:rhs * lhs]];
+                } else if (op == OperatorDiv) {
+                    [stack addObject:[NSNumber numberWithInteger:rhs / lhs]];
+                }
+            }
+            
+            xpc_dictionary_set_value(reply, "stack", XPC_Calc_Service_NSArray_to_xpc_array(stack));
             
             xpc_connection_send_message(peer, reply);
-            xpc_release(reply);        
+            xpc_release(reply);
         } else if (messageType == MessageClear) {
             [stack removeAllObjects];
         }

@@ -1,0 +1,307 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EF8DAA2313EE163300FF10E9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF8DAA2213EE163300FF10E9 /* Cocoa.framework */; };
+		EF8DAA2D13EE163300FF10E9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EF8DAA2B13EE163300FF10E9 /* InfoPlist.strings */; };
+		EF8DAA2F13EE163300FF10E9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8DAA2E13EE163300FF10E9 /* main.m */; };
+		EF8DAA3313EE163300FF10E9 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = EF8DAA3113EE163300FF10E9 /* Credits.rtf */; };
+		EF8DAA3613EE163300FF10E9 /* XPC_CalcAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8DAA3513EE163300FF10E9 /* XPC_CalcAppDelegate.m */; };
+		EF8DAA3913EE163400FF10E9 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF8DAA3713EE163400FF10E9 /* MainMenu.xib */; };
+		EF8DAA3C13EE163400FF10E9 /* XPC_Calc.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = EF8DAA3A13EE163400FF10E9 /* XPC_Calc.xcdatamodeld */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		EF8DAA1E13EE163300FF10E9 /* XPC Calc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "XPC Calc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF8DAA2213EE163300FF10E9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		EF8DAA2513EE163300FF10E9 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		EF8DAA2613EE163300FF10E9 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		EF8DAA2713EE163300FF10E9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		EF8DAA2A13EE163300FF10E9 /* XPC Calc-Info.plist */ = {isa = PBXFileReference; path = "XPC Calc-Info.plist"; sourceTree = "<group>"; };
+		EF8DAA2C13EE163300FF10E9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		EF8DAA2E13EE163300FF10E9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		EF8DAA3013EE163300FF10E9 /* XPC Calc-Prefix.pch */ = {isa = PBXFileReference; path = "XPC Calc-Prefix.pch"; sourceTree = "<group>"; };
+		EF8DAA3213EE163300FF10E9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		EF8DAA3413EE163300FF10E9 /* XPC_CalcAppDelegate.h */ = {isa = PBXFileReference; path = XPC_CalcAppDelegate.h; sourceTree = "<group>"; };
+		EF8DAA3513EE163300FF10E9 /* XPC_CalcAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XPC_CalcAppDelegate.m; sourceTree = "<group>"; };
+		EF8DAA3813EE163400FF10E9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		EF8DAA3B13EE163400FF10E9 /* XPC_Calc.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = XPC_Calc.xcdatamodel; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EF8DAA1B13EE163300FF10E9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF8DAA2313EE163300FF10E9 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EF8DAA1313EE163300FF10E9 = {
+			isa = PBXGroup;
+			children = (
+				EF8DAA2813EE163300FF10E9 /* XPC Calc */,
+				EF8DAA2113EE163300FF10E9 /* Frameworks */,
+				EF8DAA1F13EE163300FF10E9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EF8DAA1F13EE163300FF10E9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EF8DAA1E13EE163300FF10E9 /* XPC Calc.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EF8DAA2113EE163300FF10E9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EF8DAA2213EE163300FF10E9 /* Cocoa.framework */,
+				EF8DAA2413EE163300FF10E9 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EF8DAA2413EE163300FF10E9 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EF8DAA2513EE163300FF10E9 /* AppKit.framework */,
+				EF8DAA2613EE163300FF10E9 /* CoreData.framework */,
+				EF8DAA2713EE163300FF10E9 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		EF8DAA2813EE163300FF10E9 /* XPC Calc */ = {
+			isa = PBXGroup;
+			children = (
+				EF8DAA3413EE163300FF10E9 /* XPC_CalcAppDelegate.h */,
+				EF8DAA3513EE163300FF10E9 /* XPC_CalcAppDelegate.m */,
+				EF8DAA3713EE163400FF10E9 /* MainMenu.xib */,
+				EF8DAA3A13EE163400FF10E9 /* XPC_Calc.xcdatamodeld */,
+				EF8DAA2913EE163300FF10E9 /* Supporting Files */,
+			);
+			path = "XPC Calc";
+			sourceTree = "<group>";
+		};
+		EF8DAA2913EE163300FF10E9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EF8DAA2A13EE163300FF10E9 /* XPC Calc-Info.plist */,
+				EF8DAA2B13EE163300FF10E9 /* InfoPlist.strings */,
+				EF8DAA2E13EE163300FF10E9 /* main.m */,
+				EF8DAA3013EE163300FF10E9 /* XPC Calc-Prefix.pch */,
+				EF8DAA3113EE163300FF10E9 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EF8DAA1D13EE163300FF10E9 /* XPC Calc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EF8DAA3F13EE163400FF10E9 /* Build configuration list for PBXNativeTarget "XPC Calc" */;
+			buildPhases = (
+				EF8DAA1A13EE163300FF10E9 /* Sources */,
+				EF8DAA1B13EE163300FF10E9 /* Frameworks */,
+				EF8DAA1C13EE163300FF10E9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "XPC Calc";
+			productName = "XPC Calc";
+			productReference = EF8DAA1E13EE163300FF10E9 /* XPC Calc.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EF8DAA1513EE163300FF10E9 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = EF8DAA1813EE163300FF10E9 /* Build configuration list for PBXProject "XPC Calc" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = EF8DAA1313EE163300FF10E9;
+			productRefGroup = EF8DAA1F13EE163300FF10E9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EF8DAA1D13EE163300FF10E9 /* XPC Calc */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EF8DAA1C13EE163300FF10E9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF8DAA2D13EE163300FF10E9 /* InfoPlist.strings in Resources */,
+				EF8DAA3313EE163300FF10E9 /* Credits.rtf in Resources */,
+				EF8DAA3913EE163400FF10E9 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EF8DAA1A13EE163300FF10E9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF8DAA2F13EE163300FF10E9 /* main.m in Sources */,
+				EF8DAA3613EE163300FF10E9 /* XPC_CalcAppDelegate.m in Sources */,
+				EF8DAA3C13EE163400FF10E9 /* XPC_Calc.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		EF8DAA2B13EE163300FF10E9 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EF8DAA2C13EE163300FF10E9 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		EF8DAA3113EE163300FF10E9 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EF8DAA3213EE163300FF10E9 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		EF8DAA3713EE163400FF10E9 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EF8DAA3813EE163400FF10E9 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		EF8DAA3D13EE163400FF10E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		EF8DAA3E13EE163400FF10E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		EF8DAA4013EE163400FF10E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "XPC Calc/XPC Calc-Prefix.pch";
+				INFOPLIST_FILE = "XPC Calc/XPC Calc-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		EF8DAA4113EE163400FF10E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "XPC Calc/XPC Calc-Prefix.pch";
+				INFOPLIST_FILE = "XPC Calc/XPC Calc-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EF8DAA1813EE163300FF10E9 /* Build configuration list for PBXProject "XPC Calc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EF8DAA3D13EE163400FF10E9 /* Debug */,
+				EF8DAA3E13EE163400FF10E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EF8DAA3F13EE163400FF10E9 /* Build configuration list for PBXNativeTarget "XPC Calc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EF8DAA4013EE163400FF10E9 /* Debug */,
+				EF8DAA4113EE163400FF10E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		EF8DAA3A13EE163400FF10E9 /* XPC_Calc.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				EF8DAA3B13EE163400FF10E9 /* XPC_Calc.xcdatamodel */,
+			);
+			currentVersion = EF8DAA3B13EE163400FF10E9 /* XPC_Calc.xcdatamodel */;
+			path = XPC_Calc.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = EF8DAA1513EE163300FF10E9 /* Project object */;
+}

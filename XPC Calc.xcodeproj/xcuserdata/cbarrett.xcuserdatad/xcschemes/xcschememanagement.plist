@@ -14,6 +14,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>xpc-calc-service-hs.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -23,6 +28,11 @@
 			<true/>
 		</dict>
 		<key>EF8DAA4513EE165600FF10E9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EFEDB30C13EEFE6400430981</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -17,6 +17,7 @@
 		EF8DAA4F13EE165600FF10E9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8DAA4E13EE165600FF10E9 /* main.m */; };
 		EF8DAA6013EE578800FF10E9 /* xpc-calc-service.xpc in Copy XPC Services */ = {isa = PBXBuildFile; fileRef = EF8DAA4613EE165600FF10E9 /* xpc-calc-service.xpc */; };
 		EFEDB30713EE6EA200430981 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF8DAA2713EE163300FF10E9 /* Foundation.framework */; };
+		EFEDB31313EEFE6400430981 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EFEDB31113EEFE6400430981 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,11 @@
 		EF8DAA4D13EE165600FF10E9 /* XPC Calc Service-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XPC Calc Service-Prefix.pch"; sourceTree = "<group>"; };
 		EF8DAA4E13EE165600FF10E9 /* main.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EFEDB30413EE6A2F00430981 /* Shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shared.h; sourceTree = "<group>"; };
+		EFEDB30D13EEFE6400430981 /* xpc-calc-service-hs.xpc */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "xpc-calc-service-hs.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFEDB31013EEFE6400430981 /* xpc-calc-service-hs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "xpc-calc-service-hs-Info.plist"; sourceTree = "<group>"; };
+		EFEDB31213EEFE6400430981 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		EFEDB31413EEFE6400430981 /* xpc-calc-service-hs-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "xpc-calc-service-hs-Prefix.pch"; sourceTree = "<group>"; };
+		EFEDB31B13EF006800430981 /* Main.hs */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; path = Main.hs; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +97,7 @@
 				EFEDB30413EE6A2F00430981 /* Shared.h */,
 				EF8DAA2813EE163300FF10E9 /* XPC Calc */,
 				EF8DAA4713EE165600FF10E9 /* XPC Calc Service */,
+				EFEDB30E13EEFE6400430981 /* xpc-calc-service-hs */,
 				EF8DAA2113EE163300FF10E9 /* Frameworks */,
 				EF8DAA1F13EE163300FF10E9 /* Products */,
 			);
@@ -101,6 +108,7 @@
 			children = (
 				EF8DAA1E13EE163300FF10E9 /* XPC Calc.app */,
 				EF8DAA4613EE165600FF10E9 /* xpc-calc-service.xpc */,
+				EFEDB30D13EEFE6400430981 /* xpc-calc-service-hs.xpc */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -166,6 +174,25 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		EFEDB30E13EEFE6400430981 /* xpc-calc-service-hs */ = {
+			isa = PBXGroup;
+			children = (
+				EFEDB31B13EF006800430981 /* Main.hs */,
+				EFEDB30F13EEFE6400430981 /* Supporting Files */,
+			);
+			path = "xpc-calc-service-hs";
+			sourceTree = "<group>";
+		};
+		EFEDB30F13EEFE6400430981 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				EFEDB31013EEFE6400430981 /* xpc-calc-service-hs-Info.plist */,
+				EFEDB31113EEFE6400430981 /* InfoPlist.strings */,
+				EFEDB31413EEFE6400430981 /* xpc-calc-service-hs-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -205,6 +232,22 @@
 			productReference = EF8DAA4613EE165600FF10E9 /* xpc-calc-service.xpc */;
 			productType = "com.apple.product-type.bundle";
 		};
+		EFEDB30C13EEFE6400430981 /* xpc-calc-service-hs */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EFEDB31713EEFE6400430981 /* Build configuration list for PBXNativeTarget "xpc-calc-service-hs" */;
+			buildPhases = (
+				EFEDB30B13EEFE6400430981 /* Resources */,
+				EFE5A65413EF20760079E261 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "xpc-calc-service-hs";
+			productName = "xpc-calc-service-hs";
+			productReference = EFEDB30D13EEFE6400430981 /* xpc-calc-service-hs.xpc */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -224,6 +267,7 @@
 			targets = (
 				EF8DAA1D13EE163300FF10E9 /* XPC Calc */,
 				EF8DAA4513EE165600FF10E9 /* xpc-calc-service */,
+				EFEDB30C13EEFE6400430981 /* xpc-calc-service-hs */,
 			);
 		};
 /* End PBXProject section */
@@ -247,7 +291,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EFEDB30B13EEFE6400430981 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EFEDB31313EEFE6400430981 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		EFE5A65413EF20760079E261 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/xpc-calc-service-hs/*",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ghc --make -o \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH/xpc-calc-service-hs\" \"$SRCROOT/xpc-calc-service-hs/Main.hs\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		EF8DAA1A13EE163300FF10E9 /* Sources */ = {
@@ -306,6 +375,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				EF8DAA4B13EE165600FF10E9 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		EFEDB31113EEFE6400430981 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EFEDB31213EEFE6400430981 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -404,6 +481,30 @@
 			};
 			name = Release;
 		};
+		EFEDB31813EEFE6400430981 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "xpc-calc-service-hs/xpc-calc-service-hs-Prefix.pch";
+				INFOPLIST_FILE = "xpc-calc-service-hs/xpc-calc-service-hs-Info.plist";
+				MACH_O_TYPE = mh_execute;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xpc;
+			};
+			name = Debug;
+		};
+		EFEDB31913EEFE6400430981 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "xpc-calc-service-hs/xpc-calc-service-hs-Prefix.pch";
+				INFOPLIST_FILE = "xpc-calc-service-hs/xpc-calc-service-hs-Info.plist";
+				MACH_O_TYPE = mh_execute;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xpc;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -430,6 +531,15 @@
 			buildConfigurations = (
 				EF8DAA5113EE165600FF10E9 /* Debug */,
 				EF8DAA5213EE165600FF10E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EFEDB31713EEFE6400430981 /* Build configuration list for PBXNativeTarget "xpc-calc-service-hs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EFEDB31813EEFE6400430981 /* Debug */,
+				EFEDB31913EEFE6400430981 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

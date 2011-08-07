@@ -13,9 +13,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "EF8DAA4513EE165600FF10E9"
-               BuildableName = "xpc-calc-service.xpc"
-               BlueprintName = "xpc-calc-service"
+               BlueprintIdentifier = "EFEDB30C13EEFE6400430981"
+               BuildableName = "xpc-calc-service-hs.xpc"
+               BlueprintName = "xpc-calc-service-hs"
                ReferencedContainer = "container:XPC Calc.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

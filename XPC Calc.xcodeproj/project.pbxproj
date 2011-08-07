@@ -14,8 +14,9 @@
 		EF8DAA3613EE163300FF10E9 /* XPC_CalcAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8DAA3513EE163300FF10E9 /* XPC_CalcAppDelegate.m */; };
 		EF8DAA3913EE163400FF10E9 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF8DAA3713EE163400FF10E9 /* MainMenu.xib */; };
 		EF8DAA4C13EE165600FF10E9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EF8DAA4A13EE165600FF10E9 /* InfoPlist.strings */; };
-		EF8DAA4F13EE165600FF10E9 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = EF8DAA4E13EE165600FF10E9 /* main.c */; };
+		EF8DAA4F13EE165600FF10E9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8DAA4E13EE165600FF10E9 /* main.m */; };
 		EF8DAA6013EE578800FF10E9 /* xpc-calc-service.xpc in Copy XPC Services */ = {isa = PBXBuildFile; fileRef = EF8DAA4613EE165600FF10E9 /* xpc-calc-service.xpc */; };
+		EFEDB30313EE63E400430981 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFEDB30213EE63E400430981 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,7 +61,8 @@
 		EF8DAA4913EE165600FF10E9 /* XPC Calc Service-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "XPC Calc Service-Info.plist"; sourceTree = "<group>"; };
 		EF8DAA4B13EE165600FF10E9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EF8DAA4D13EE165600FF10E9 /* XPC Calc Service-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XPC Calc Service-Prefix.pch"; sourceTree = "<group>"; };
-		EF8DAA4E13EE165600FF10E9 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		EF8DAA4E13EE165600FF10E9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		EFEDB30213EE63E400430981 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFEDB30313EE63E400430981 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +88,7 @@
 		EF8DAA1313EE163300FF10E9 = {
 			isa = PBXGroup;
 			children = (
+				EFEDB30213EE63E400430981 /* Foundation.framework */,
 				EF8DAA2813EE163300FF10E9 /* XPC Calc */,
 				EF8DAA4713EE165600FF10E9 /* XPC Calc Service */,
 				EF8DAA2113EE163300FF10E9 /* Frameworks */,
@@ -113,9 +117,9 @@
 		EF8DAA2413EE163300FF10E9 /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EF8DAA2713EE163300FF10E9 /* Foundation.framework */,
 				EF8DAA2513EE163300FF10E9 /* AppKit.framework */,
 				EF8DAA2613EE163300FF10E9 /* CoreData.framework */,
-				EF8DAA2713EE163300FF10E9 /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
 			sourceTree = "<group>";
@@ -146,7 +150,7 @@
 		EF8DAA4713EE165600FF10E9 /* XPC Calc Service */ = {
 			isa = PBXGroup;
 			children = (
-				EF8DAA4E13EE165600FF10E9 /* main.c */,
+				EF8DAA4E13EE165600FF10E9 /* main.m */,
 				EF8DAA4813EE165600FF10E9 /* Supporting Files */,
 			);
 			path = "XPC Calc Service";
@@ -259,7 +263,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EF8DAA4F13EE165600FF10E9 /* main.c in Sources */,
+				EF8DAA4F13EE165600FF10E9 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

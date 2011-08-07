@@ -15,7 +15,32 @@
 		EF8DAA3913EE163400FF10E9 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = EF8DAA3713EE163400FF10E9 /* MainMenu.xib */; };
 		EF8DAA4C13EE165600FF10E9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EF8DAA4A13EE165600FF10E9 /* InfoPlist.strings */; };
 		EF8DAA4F13EE165600FF10E9 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = EF8DAA4E13EE165600FF10E9 /* main.c */; };
+		EF8DAA6013EE578800FF10E9 /* com.springsandstruts.xpc-calc.xpc-calc-service.xpc in Copy XPC Services */ = {isa = PBXBuildFile; fileRef = EF8DAA4613EE165600FF10E9 /* com.springsandstruts.xpc-calc.xpc-calc-service.xpc */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EF8DAA5413EE38D800FF10E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EF8DAA1513EE163300FF10E9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EF8DAA4513EE165600FF10E9;
+			remoteInfo = "XPC Calc Service";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EF8DAA5F13EE576E00FF10E9 /* Copy XPC Services */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/XPCServices;
+			dstSubfolderSpec = 1;
+			files = (
+				EF8DAA6013EE578800FF10E9 /* com.springsandstruts.xpc-calc.xpc-calc-service.xpc in Copy XPC Services */,
+			);
+			name = "Copy XPC Services";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		EF8DAA1E13EE163300FF10E9 /* XPC Calc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "XPC Calc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -31,7 +56,7 @@
 		EF8DAA3413EE163300FF10E9 /* XPC_CalcAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XPC_CalcAppDelegate.h; sourceTree = "<group>"; };
 		EF8DAA3513EE163300FF10E9 /* XPC_CalcAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XPC_CalcAppDelegate.m; sourceTree = "<group>"; };
 		EF8DAA3813EE163400FF10E9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		EF8DAA4613EE165600FF10E9 /* com.springsandstruts.XPC Calc Service.xpc */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "com.springsandstruts.XPC Calc Service.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF8DAA4613EE165600FF10E9 /* com.springsandstruts.xpc-calc.xpc-calc-service.xpc */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "com.springsandstruts.xpc-calc.xpc-calc-service.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF8DAA4913EE165600FF10E9 /* XPC Calc Service-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "XPC Calc Service-Info.plist"; sourceTree = "<group>"; };
 		EF8DAA4B13EE165600FF10E9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EF8DAA4D13EE165600FF10E9 /* XPC Calc Service-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XPC Calc Service-Prefix.pch"; sourceTree = "<group>"; };
@@ -71,7 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				EF8DAA1E13EE163300FF10E9 /* XPC Calc.app */,
-				EF8DAA4613EE165600FF10E9 /* com.springsandstruts.XPC Calc Service.xpc */,
+				EF8DAA4613EE165600FF10E9 /* com.springsandstruts.xpc-calc.xpc-calc-service.xpc */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -147,19 +172,21 @@
 				EF8DAA1A13EE163300FF10E9 /* Sources */,
 				EF8DAA1B13EE163300FF10E9 /* Frameworks */,
 				EF8DAA1C13EE163300FF10E9 /* Resources */,
+				EF8DAA5F13EE576E00FF10E9 /* Copy XPC Services */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				EF8DAA5513EE38D800FF10E9 /* PBXTargetDependency */,
 			);
 			name = "XPC Calc";
 			productName = "XPC Calc";
 			productReference = EF8DAA1E13EE163300FF10E9 /* XPC Calc.app */;
 			productType = "com.apple.product-type.application";
 		};
-		EF8DAA4513EE165600FF10E9 /* XPC Calc Service */ = {
+		EF8DAA4513EE165600FF10E9 /* xpc-calc-service */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EF8DAA5013EE165600FF10E9 /* Build configuration list for PBXNativeTarget "XPC Calc Service" */;
+			buildConfigurationList = EF8DAA5013EE165600FF10E9 /* Build configuration list for PBXNativeTarget "xpc-calc-service" */;
 			buildPhases = (
 				EF8DAA4213EE165600FF10E9 /* Sources */,
 				EF8DAA4313EE165600FF10E9 /* Frameworks */,
@@ -169,9 +196,9 @@
 			);
 			dependencies = (
 			);
-			name = "XPC Calc Service";
+			name = "xpc-calc-service";
 			productName = "XPC Calc Service";
-			productReference = EF8DAA4613EE165600FF10E9 /* com.springsandstruts.XPC Calc Service.xpc */;
+			productReference = EF8DAA4613EE165600FF10E9 /* com.springsandstruts.xpc-calc.xpc-calc-service.xpc */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -192,7 +219,7 @@
 			projectRoot = "";
 			targets = (
 				EF8DAA1D13EE163300FF10E9 /* XPC Calc */,
-				EF8DAA4513EE165600FF10E9 /* XPC Calc Service */,
+				EF8DAA4513EE165600FF10E9 /* xpc-calc-service */,
 			);
 		};
 /* End PBXProject section */
@@ -237,6 +264,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EF8DAA5513EE38D800FF10E9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EF8DAA4513EE165600FF10E9 /* xpc-calc-service */;
+			targetProxy = EF8DAA5413EE38D800FF10E9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		EF8DAA2B13EE163300FF10E9 /* InfoPlist.strings */ = {
@@ -348,7 +383,7 @@
 				GCC_PREFIX_HEADER = "XPC Calc Service/XPC Calc Service-Prefix.pch";
 				INFOPLIST_FILE = "XPC Calc Service/XPC Calc Service-Info.plist";
 				MACH_O_TYPE = mh_execute;
-				PRODUCT_NAME = "com.springsandstruts.$(TARGET_NAME)";
+				PRODUCT_NAME = "com.springsandstruts.xpc-calc.$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xpc;
 			};
 			name = Debug;
@@ -360,7 +395,7 @@
 				GCC_PREFIX_HEADER = "XPC Calc Service/XPC Calc Service-Prefix.pch";
 				INFOPLIST_FILE = "XPC Calc Service/XPC Calc Service-Info.plist";
 				MACH_O_TYPE = mh_execute;
-				PRODUCT_NAME = "com.springsandstruts.$(TARGET_NAME)";
+				PRODUCT_NAME = "com.springsandstruts.xpc-calc.$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xpc;
 			};
 			name = Release;
@@ -385,7 +420,7 @@
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		EF8DAA5013EE165600FF10E9 /* Build configuration list for PBXNativeTarget "XPC Calc Service" */ = {
+		EF8DAA5013EE165600FF10E9 /* Build configuration list for PBXNativeTarget "xpc-calc-service" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EF8DAA5113EE165600FF10E9 /* Debug */,

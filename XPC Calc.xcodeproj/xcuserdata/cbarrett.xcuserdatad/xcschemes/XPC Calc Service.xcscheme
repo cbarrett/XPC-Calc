@@ -14,8 +14,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EF8DAA4513EE165600FF10E9"
-               BuildableName = "com.springsandstruts.XPC Calc Service.xpc"
-               BlueprintName = "XPC Calc Service"
+               BuildableName = "com.springsandstruts.xpc-calc.xpc-calc-service.xpc"
+               BlueprintName = "xpc-calc-service"
                ReferencedContainer = "container:XPC Calc.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

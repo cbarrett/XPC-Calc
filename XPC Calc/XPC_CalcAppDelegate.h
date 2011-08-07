@@ -7,10 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <xpc/xpc.h>
 
 @interface XPC_CalcAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
     NSTextField *messageTextField;
+    xpc_connection_t serviceConnection;
 }
 
 @property (assign) IBOutlet NSTextField *messageTextField;

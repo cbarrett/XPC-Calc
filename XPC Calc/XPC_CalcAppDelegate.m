@@ -44,6 +44,8 @@
                 // state at this point.
                 xpc_release(serviceConnection);
                 serviceConnection = nil;
+                xpc_release(stack);
+                stack = NULL;
             } else {
                 // whoops
             }
@@ -52,6 +54,7 @@
         }
     });
     xpc_connection_resume(serviceConnection);
+    stack = xpc_array_create(NULL, 0);
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification
@@ -59,16 +62,25 @@
     xpc_connection_cancel(serviceConnection);
     xpc_release(serviceConnection);
     serviceConnection = nil;
+    
+    xpc_release(stack);
+    stack = NULL;
 }
 
-- (void)setStack:(xpc_object_t)stack
+- (void)updateStackView
 {
     NSMutableString *stackString = [NSMutableString string];
-    for (size_t i = 0; i < xpc_array_get_count(stack); i++) {
-        int64_t num = xpc_array_get_int64(stack, i);
-        [stackString appendFormat:@"%li\n", num];
-    }
+    xpc_array_apply(stack, ^ (size_t idx, xpc_object_t value) {
+        [stackString insertString:[NSString stringWithFormat:@"%li\n", xpc_int64_get_value(value)] atIndex:0];
+        return (bool)true;
+    });
     [[self stackTextView] setString:stackString];
+}
+
+- (void)setStack:(xpc_object_t)inStack
+{
+    stack = xpc_retain(inStack);
+    [self updateStackView];
 }
 
 - (IBAction)push:(id)sender
@@ -81,16 +93,12 @@
     });
     xpc_release(message);
 #else
-    if (![[inputTextField stringValue] isEqualToString:@""]) {
-        xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
-        xpc_dictionary_set_int64(message, "type", MessagePush);
-        xpc_dictionary_set_int64(message, "num", [inputTextField integerValue]);
-        xpc_connection_send_message_with_reply(serviceConnection, message, dispatch_get_main_queue(), ^ (xpc_object_t reply) {
-            [self setStack:xpc_dictionary_get_value(reply, "stack")];
-            [[self inputTextField] setStringValue:@""];
-        });
-        xpc_release(message);
+    if (![[[self inputTextField] stringValue] isEqualToString:@""]) {
+        xpc_array_set_int64(stack, XPC_ARRAY_APPEND, [[self inputTextField] integerValue]);
+        [[self inputTextField] setStringValue:@""];
     }
+    [self updateStackView];
+    
 #endif
     
 }
@@ -98,8 +106,8 @@
 - (void)sendOperatorMessage:(int64_t)operator
 {
     xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_int64(message, "type", MessageOperator);
     xpc_dictionary_set_int64(message, "op", operator);
+    xpc_dictionary_set_value(message, "stack", stack);
     xpc_connection_send_message_with_reply(serviceConnection, message, dispatch_get_main_queue(), ^ (xpc_object_t reply) {
         [self setStack:xpc_dictionary_get_value(reply, "stack")];
     });
@@ -129,11 +137,9 @@
 
 - (IBAction)clear:(id)sender
 {
-    xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_int64(message, "type", MessageOperator);
-    xpc_connection_send_message(serviceConnection, message);
-    [[self stackTextView] setString:@""];
-    xpc_release(message);
+    xpc_object_t new_stack = xpc_array_create(NULL, 0);
+    [self setStack:new_stack];
+    xpc_release(new_stack);
 }
     
 @end

@@ -14,6 +14,7 @@
     NSTextField *inputTextField;
     xpc_connection_t serviceConnection;
     NSTextView *stackTextView;
+    xpc_object_t stack;
 }
 @property (assign) IBOutlet NSTextView *stackTextView;
 @property (assign) IBOutlet NSTextField *inputTextField;

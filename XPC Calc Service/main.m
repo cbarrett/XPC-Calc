@@ -11,8 +11,6 @@
 #include <assert.h>
 #import "Shared.h"
 
-NSMutableArray *stack = nil; 
-
 static xpc_object_t XPC_Calc_Service_NSArray_to_xpc_array(NSArray *inArray)
 {
     xpc_object_t outArray = xpc_array_create(NULL, 0);
@@ -41,52 +39,50 @@ static void XPC_Calc_Service_peer_event_handler(xpc_connection_t peer, xpc_objec
 		assert(type == XPC_TYPE_DICTIONARY);
 		// Handle the message.
         
-        int64_t messageType = xpc_dictionary_get_int64(event, "type");
+        xpc_object_t reply = xpc_dictionary_create_reply(event);
+        int64_t op = xpc_dictionary_get_int64(event, "op");
+        xpc_object_t stack = xpc_dictionary_get_value(event, "stack");
         
-        if (messageType == MessagePush) {
-            xpc_object_t reply = xpc_dictionary_create_reply(event);
+        if (xpc_array_get_count(stack) >= 2) {
+            int64_t rhs = xpc_array_get_int64(stack, xpc_array_get_count(stack) - 1);
+            int64_t lhs = xpc_array_get_int64(stack, xpc_array_get_count(stack) - 2);
             
-            [stack addObject:[NSNumber numberWithInteger:xpc_dictionary_get_int64(event, "num")]];
-            xpc_dictionary_set_value(reply, "stack", XPC_Calc_Service_NSArray_to_xpc_array(stack));
-            
-            xpc_connection_send_message(peer, reply);
-            xpc_release(reply);        
-        } else if (messageType == MessageOperator) {
-            xpc_object_t reply = xpc_dictionary_create_reply(event);
-            int64_t op = xpc_dictionary_get_int64(event, "op");
-            
-            if ([stack count] >= 2) {
-                NSInteger rhs = [[stack objectAtIndex:[stack count] - 1] integerValue];
-                NSInteger lhs = [[stack objectAtIndex:[stack count] - 2] integerValue];
-                
-                [stack removeObjectAtIndex:[stack count] - 1];
-                [stack removeObjectAtIndex:[stack count] - 1];
-                
-                if (op == OperatorAdd) {
-                    [stack addObject:[NSNumber numberWithInteger:rhs + lhs]];
-                } else if (op == OperatorSub) {
-                    [stack addObject:[NSNumber numberWithInteger:rhs - lhs]];
-                } else if (op == OperatorMul) {
-                    [stack addObject:[NSNumber numberWithInteger:rhs * lhs]];
-                } else if (op == OperatorDiv) {
-                    [stack addObject:[NSNumber numberWithInteger:rhs / lhs]];
-                }
+            int64_t result = 0;
+            if (op == OperatorAdd) {
+                result = rhs + lhs;
+            } else if (op == OperatorSub) {
+                result = rhs - lhs;
+            } else if (op == OperatorMul) {
+                result = rhs * lhs;
+            } else if (op == OperatorDiv) {
+                result = rhs / lhs;
             }
             
-            xpc_dictionary_set_value(reply, "stack", XPC_Calc_Service_NSArray_to_xpc_array(stack));
+            xpc_object_t new_stack = xpc_array_create(NULL, 0);
             
-            xpc_connection_send_message(peer, reply);
-            xpc_release(reply);
-        } else if (messageType == MessageClear) {
-            [stack removeAllObjects];
+            xpc_array_apply(stack, ^ (size_t idx, xpc_object_t value) {
+                if (idx >= xpc_array_get_count(stack) - 2) {
+                    return (bool)false;
+                }
+                xpc_array_append_value(new_stack, value);
+                return (bool)true;
+            });
+            
+            xpc_array_set_int64(new_stack, XPC_ARRAY_APPEND, result);
+            
+            xpc_dictionary_set_value(reply, "stack", new_stack);
+            xpc_release(new_stack);
+        } else {
+            xpc_dictionary_set_value(reply, "stack", stack);
         }
+        
+        xpc_connection_send_message(peer, reply);
+        xpc_release(reply);
 	}
 }
 
 static void XPC_Calc_Service_event_handler(xpc_connection_t peer) 
 {
-    stack = [[NSMutableArray alloc] init];
-
 	// By defaults, new connections will target the default dispatch
 	// concurrent queue.
 	xpc_connection_set_event_handler(peer, ^(xpc_object_t event) {

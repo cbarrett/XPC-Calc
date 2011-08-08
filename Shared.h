@@ -10,12 +10,6 @@
 #define XPC_Calc_Shared_h
 
 enum {
-    MessagePush,
-    MessageOperator,
-    MessageClear
-};
-
-enum {
     OperatorAdd,
     OperatorSub,
     OperatorMul,

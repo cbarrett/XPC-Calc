@@ -1,7 +1,10 @@
 {-# LANGUAGE ForeignFunctionInterface, EmptyDataDecls #-}
 
-module HsXPC where
+module HsXPC
+  ( hsEventHandler
+  ) where
 
+import Control.Monad
 import Foreign
 import Foreign.C.Types 
 import Foreign.C.String
@@ -31,19 +34,21 @@ foreign import ccall unsafe "xpc/connection.h xpc_connection_send_message"
 foreign import ccall unsafe "xpc/xpc.h &xpc_release"
   finalizerXPCRelease :: FunPtr (XPCObject -> IO ())
 
-sendReply :: XPCConnection -> XPCObject -> (XPCObject -> IO ()) -> IO ()
+sendReply :: XPCConnection -> XPCObject -> (XPCObject -> [(String, String)]) -> IO ()
 sendReply peer event f =
   if eventType == xpc_type_error then return ()
   else do
-    replyIO <- xpc_dictionary_create_reply event
-    replyF  <- newForeignPtr finalizerXPCRelease $ replyIO
+    replyF  <- newForeignPtr finalizerXPCRelease =<< xpc_dictionary_create_reply event
     withForeignPtr replyF $ \reply -> do
-      f reply
+      mapM (buildReplyDict reply) (f reply)
       xpc_connection_send_message peer reply
   where eventType = xpc_get_type event
 
-hsEventHandler :: XPCConnection -> XPCObject -> IO ()
-hsEventHandler peer event = sendReply peer event $ \reply -> do
-  withCString "message" $ \key       -> do
-  withCString "Hello World" $ \value -> do
+buildReplyDict :: XPCObject -> (String, String) -> IO ()
+buildReplyDict reply (k, v) = do
+  withCString k $ \key   -> do
+  withCString v $ \value -> do
     xpc_dictionary_set_string reply key value
+
+hsEventHandler :: XPCConnection -> XPCObject -> IO ()
+hsEventHandler peer event = sendReply peer event $ \_ -> [("message", "Hello World")]

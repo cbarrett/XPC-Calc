@@ -21,16 +21,19 @@ foreign import ccall unsafe "xpc/xpc.h xpc_dictionary_set_string"
 foreign import ccall unsafe "xpc/connection.h xpc_connection_send_message"
     xpc_connection_send_message :: XPCConnection -> XPCObject -> IO ()
 
-foreign import ccall unsafe "xpc/xpc.h xpc_release"
-    xpc_release :: XPCObject -> IO ()
+foreign import ccall unsafe "xpc/xpc.h &xpc_release"
+    finalizerXPCRelease :: FunPtr (XPCObject -> IO ())
+
+sendReply :: XPCConnection -> XPCObject -> (XPCObject -> IO ()) -> IO ()
+sendReply peer event f = do
+  replyIO <- xpc_dictionary_create_reply event
+  replyF  <- newForeignPtr finalizerXPCRelease $ replyIO
+  withForeignPtr replyF $ \reply -> do
+    f reply
+    xpc_connection_send_message peer reply
 
 hsEventHandler :: XPCConnection -> XPCObject -> IO ()
-hsEventHandler peer event = do
-    reply <- xpc_dictionary_create_reply event
-
-    withCString "message" $ \key -> do
-        withCString "Hello World" $ \value -> do
-            xpc_dictionary_set_string reply key value
-    
-    xpc_connection_send_message peer reply
-    xpc_release reply
+hsEventHandler peer event = sendReply peer event $ \reply -> do
+  withCString "message" $ \key       -> do
+  withCString "Hello World" $ \value -> do
+    xpc_dictionary_set_string reply key value

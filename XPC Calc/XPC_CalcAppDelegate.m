@@ -10,6 +10,14 @@
 #import <xpc/xpc.h>
 #import "Shared.h"
 
+#define HASKELL_SERVICE 0
+
+#if HASKELL_SERVICE
+#define SERVICE_NAME "com.springsandstruts.xpc-calc.xpc-calc-service-hs"
+#else
+#define SERVICE_NAME "com.springsandstruts.xpc-calc.xpc-calc-service"
+#endif
+
 @implementation XPC_CalcAppDelegate
 
 @synthesize stackTextView;
@@ -18,7 +26,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    serviceConnection = xpc_connection_create("com.springsandstruts.xpc-calc.xpc-calc-service-hs", dispatch_get_main_queue());
+    serviceConnection = xpc_connection_create(SERVICE_NAME, dispatch_get_main_queue());
     
     xpc_connection_set_event_handler(serviceConnection, ^(xpc_object_t event) {
         xpc_type_t type = xpc_get_type(event);
@@ -66,7 +74,13 @@
 - (IBAction)push:(id)sender
 {
     
-#if 0
+#if HASKELL_SERVICE
+    xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_connection_send_message_with_reply(serviceConnection, message, dispatch_get_main_queue(), ^ (xpc_object_t reply) {
+        NSLog(@"%s", xpc_dictionary_get_string(reply, "message"));
+    });
+    xpc_release(message);
+#else
     if (![[inputTextField stringValue] isEqualToString:@""]) {
         xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
         xpc_dictionary_set_int64(message, "type", MessagePush);
@@ -77,12 +91,6 @@
         });
         xpc_release(message);
     }
-#else
-    xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_connection_send_message_with_reply(serviceConnection, message, dispatch_get_main_queue(), ^ (xpc_object_t reply) {
-        NSLog(@"%s", xpc_dictionary_get_string(reply, "message"));
-    });
-    xpc_release(message);
 #endif
     
 }

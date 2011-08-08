@@ -38,7 +38,7 @@ sendReply :: XPCConnection -> XPCObject -> (XPCObject -> [(String, String)]) -> 
 sendReply peer event f =
   if eventType == xpc_type_error then return ()
   else do
-    replyF  <- newForeignPtr finalizerXPCRelease =<< xpc_dictionary_create_reply event
+    replyF <- newForeignPtr finalizerXPCRelease =<< xpc_dictionary_create_reply event
     withForeignPtr replyF $ \reply -> do
       mapM (buildReplyDict reply) (f reply)
       xpc_connection_send_message peer reply

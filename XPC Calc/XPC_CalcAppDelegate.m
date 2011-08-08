@@ -10,7 +10,7 @@
 #import <xpc/xpc.h>
 #import "Shared.h"
 
-#define HASKELL_SERVICE 0
+#define HASKELL_SERVICE 1
 
 #if HASKELL_SERVICE
 #define SERVICE_NAME "com.springsandstruts.xpc-calc.xpc-calc-service-hs"

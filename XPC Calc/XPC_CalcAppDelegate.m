@@ -42,6 +42,7 @@
                 // xpc_connection_create() is incorrect or we (this process) have
                 // canceled the service; we can do any cleanup of appliation
                 // state at this point.
+                NSLog(@"Uh oh, connection invalid");
                 xpc_release(serviceConnection);
                 serviceConnection = nil;
                 xpc_release(stack);
@@ -85,22 +86,11 @@
 
 - (IBAction)push:(id)sender
 {
-    
-#if HASKELL_SERVICE
-    xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_connection_send_message_with_reply(serviceConnection, message, dispatch_get_main_queue(), ^ (xpc_object_t reply) {
-        NSLog(@"%s", xpc_dictionary_get_string(reply, "message"));
-    });
-    xpc_release(message);
-#else
     if (![[[self inputTextField] stringValue] isEqualToString:@""]) {
         xpc_array_set_int64(stack, XPC_ARRAY_APPEND, [[self inputTextField] integerValue]);
         [[self inputTextField] setStringValue:@""];
     }
     [self updateStackView];
-    
-#endif
-    
 }
 
 - (void)sendOperatorMessage:(int64_t)operator
@@ -109,7 +99,16 @@
     xpc_dictionary_set_int64(message, "op", operator);
     xpc_dictionary_set_value(message, "stack", stack);
     xpc_connection_send_message_with_reply(serviceConnection, message, dispatch_get_main_queue(), ^ (xpc_object_t reply) {
-        [self setStack:xpc_dictionary_get_value(reply, "stack")];
+        xpc_type_t type = xpc_get_type(reply);
+        if (type == XPC_TYPE_ERROR) {
+            if (reply == XPC_ERROR_CONNECTION_INTERRUPTED) {
+                NSLog(@"interrupted");
+            } else if (reply == XPC_ERROR_CONNECTION_INVALID) {            
+                NSLog(@"invalid");
+            }
+        } else if (type == XPC_TYPE_DICTIONARY) {            
+            [self setStack:xpc_dictionary_get_value(reply, "stack")];
+        }
     });
     xpc_release(message);
 

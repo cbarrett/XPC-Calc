@@ -44,18 +44,18 @@ static void XPC_Calc_Service_peer_event_handler(xpc_connection_t peer, xpc_objec
         xpc_object_t stack = xpc_dictionary_get_value(event, "stack");
         
         if (xpc_array_get_count(stack) >= 2) {
-            int64_t rhs = xpc_array_get_int64(stack, xpc_array_get_count(stack) - 1);
-            int64_t lhs = xpc_array_get_int64(stack, xpc_array_get_count(stack) - 2);
+            int64_t lhs = xpc_array_get_int64(stack, xpc_array_get_count(stack) - 1);
+            int64_t rhs = xpc_array_get_int64(stack, xpc_array_get_count(stack) - 2);
             
             int64_t result = 0;
             if (op == OperatorAdd) {
-                result = rhs + lhs;
+                result = lhs + rhs;
             } else if (op == OperatorSub) {
-                result = rhs - lhs;
+                result = lhs - rhs;
             } else if (op == OperatorMul) {
-                result = rhs * lhs;
+                result = lhs * rhs;
             } else if (op == OperatorDiv) {
-                result = rhs / lhs;
+                result = lhs / rhs;
             }
             
             xpc_object_t new_stack = xpc_array_create(NULL, 0);

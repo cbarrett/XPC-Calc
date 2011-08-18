@@ -56,7 +56,7 @@
 		EF8DAA4913EE165600FF10E9 /* XPC Calc Service-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "XPC Calc Service-Info.plist"; sourceTree = "<group>"; };
 		EF8DAA4B13EE165600FF10E9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		EF8DAA4D13EE165600FF10E9 /* XPC Calc Service-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XPC Calc Service-Prefix.pch"; sourceTree = "<group>"; };
-		EF8DAA4E13EE165600FF10E9 /* main.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		EF8DAA4E13EE165600FF10E9 /* main.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; name = main.m; path = "../Objective-C Service/main.m"; sourceTree = "<group>"; };
 		EFEDB30413EE6A2F00430981 /* Shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shared.h; sourceTree = "<group>"; };
 		EFEDB30D13EEFE6400430981 /* xpc-calc-service-hs.xpc */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "xpc-calc-service-hs.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFEDB31013EEFE6400430981 /* xpc-calc-service-hs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "xpc-calc-service-hs-Info.plist"; sourceTree = "<group>"; };
@@ -89,8 +89,8 @@
 			children = (
 				EFEDB30413EE6A2F00430981 /* Shared.h */,
 				EF8DAA2813EE163300FF10E9 /* XPC Calc */,
-				EF8DAA4713EE165600FF10E9 /* XPC Calc Service */,
-				EFEDB30E13EEFE6400430981 /* xpc-calc-service-hs */,
+				EF8DAA4713EE165600FF10E9 /* Objective-C Service */,
+				EFEDB30E13EEFE6400430981 /* Haskell Service */,
 				EF8DAA2113EE163300FF10E9 /* Frameworks */,
 				EF8DAA1F13EE163300FF10E9 /* Products */,
 			);
@@ -148,13 +148,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		EF8DAA4713EE165600FF10E9 /* XPC Calc Service */ = {
+		EF8DAA4713EE165600FF10E9 /* Objective-C Service */ = {
 			isa = PBXGroup;
 			children = (
 				EF8DAA4E13EE165600FF10E9 /* main.m */,
 				EF8DAA4813EE165600FF10E9 /* Supporting Files */,
 			);
-			path = "XPC Calc Service";
+			path = "Objective-C Service";
 			sourceTree = "<group>";
 		};
 		EF8DAA4813EE165600FF10E9 /* Supporting Files */ = {
@@ -167,14 +167,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		EFEDB30E13EEFE6400430981 /* xpc-calc-service-hs */ = {
+		EFEDB30E13EEFE6400430981 /* Haskell Service */ = {
 			isa = PBXGroup;
 			children = (
 				EF60B56413EF43F300B4D22E /* main.c */,
 				EFEDB30F13EEFE6400430981 /* Supporting Files */,
 				EF60B56513EF453600B4D22E /* HsXPC.hs */,
 			);
-			path = "xpc-calc-service-hs";
+			path = "Haskell Service";
 			sourceTree = "<group>";
 		};
 		EFEDB30F13EEFE6400430981 /* Supporting Files */ = {
@@ -307,7 +307,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"\nghc -c -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\" \"$SRCROOT/xpc-calc-service-hs/HsXPC.hs\"\nghc --make -no-hs-main -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\"  -o \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH/xpc-calc-service-hs\" \"$SRCROOT/xpc-calc-service-hs/HsXPC.hs\" \"$SRCROOT/xpc-calc-service-hs/main.c\"\n";
+			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"\nghc -c -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\" \"$SRCROOT/Haskell Service/HsXPC.hs\"\nghc --make -no-hs-main -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\"  -o \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH/Haskell Service\" \"$SRCROOT/Haskell Service/HsXPC.hs\" \"$SRCROOT/Haskell Service/main.c\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -446,8 +446,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "XPC Calc Service/XPC Calc Service-Prefix.pch";
-				INFOPLIST_FILE = "XPC Calc Service/XPC Calc Service-Info.plist";
+				GCC_PREFIX_HEADER = "Objective-C Service/XPC Calc Service-Prefix.pch";
+				INFOPLIST_FILE = "Objective-C Service/XPC Calc Service-Info.plist";
 				MACH_O_TYPE = mh_execute;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xpc;
@@ -458,8 +458,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "XPC Calc Service/XPC Calc Service-Prefix.pch";
-				INFOPLIST_FILE = "XPC Calc Service/XPC Calc Service-Info.plist";
+				GCC_PREFIX_HEADER = "Objective-C Service/XPC Calc Service-Prefix.pch";
+				INFOPLIST_FILE = "Objective-C Service/XPC Calc Service-Info.plist";
 				MACH_O_TYPE = mh_execute;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xpc;
@@ -470,8 +470,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "xpc-calc-service-hs/xpc-calc-service-hs-Prefix.pch";
-				INFOPLIST_FILE = "xpc-calc-service-hs/xpc-calc-service-hs-Info.plist";
+				GCC_PREFIX_HEADER = "Haskell Service/xpc-calc-service-hs-Prefix.pch";
+				INFOPLIST_FILE = "Haskell Service/xpc-calc-service-hs-Info.plist";
 				MACH_O_TYPE = mh_execute;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xpc;
@@ -482,8 +482,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "xpc-calc-service-hs/xpc-calc-service-hs-Prefix.pch";
-				INFOPLIST_FILE = "xpc-calc-service-hs/xpc-calc-service-hs-Info.plist";
+				GCC_PREFIX_HEADER = "Haskell Service/xpc-calc-service-hs-Prefix.pch";
+				INFOPLIST_FILE = "Haskell Service/xpc-calc-service-hs-Info.plist";
 				MACH_O_TYPE = mh_execute;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xpc;

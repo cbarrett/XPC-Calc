@@ -10,13 +10,16 @@
 #import <xpc/xpc.h>
 #import "Shared.h"
 
-#define HASKELL_SERVICE 1
+#define HASKELL_SERVICE "com.springsandstruts.xpc-calc.xpc-calc-service-hs"
+#define OBJC_SERVICE "com.springsandstruts.xpc-calc.xpc-calc-service"
 
-#if HASKELL_SERVICE
-#define SERVICE_NAME "com.springsandstruts.xpc-calc.xpc-calc-service-hs"
-#else
-#define SERVICE_NAME "com.springsandstruts.xpc-calc.xpc-calc-service"
-#endif
+
+@interface XPC_CalcAppDelegate ()
+
+@property (nonatomic) xpc_connection_t serviceConnection;
+
+@end
+
 
 @implementation XPC_CalcAppDelegate
 
@@ -26,9 +29,16 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    serviceConnection = xpc_connection_create(SERVICE_NAME, dispatch_get_main_queue());
+    stack = xpc_array_create(NULL, 0);
+    self.useHaskellService = NO;
+}
+
+
+- (void)setUpService:(const char *)serviceName
+{
+    xpc_connection_t connection = xpc_connection_create(serviceName, dispatch_get_main_queue());
     
-    xpc_connection_set_event_handler(serviceConnection, ^(xpc_object_t event) {
+    xpc_connection_set_event_handler(connection, ^(xpc_object_t event) {
         xpc_type_t type = xpc_get_type(event);
         
         if (type == XPC_TYPE_ERROR) {
@@ -42,11 +52,9 @@
                 // xpc_connection_create() is incorrect or we (this process) have
                 // canceled the service; we can do any cleanup of appliation
                 // state at this point.
-                NSLog(@"Uh oh, connection invalid");
-                xpc_release(serviceConnection);
-                serviceConnection = nil;
-                xpc_release(stack);
-                stack = NULL;
+                if (self.serviceConnection == connection) {
+                    self.serviceConnection = NULL;
+                }
             } else {
                 // whoops
             }
@@ -54,19 +62,57 @@
             // whoops
         }
     });
-    xpc_connection_resume(serviceConnection);
-    stack = xpc_array_create(NULL, 0);
+    xpc_connection_resume(connection);
+    
+    self.serviceConnection = connection;
+    xpc_release(connection);
 }
+
 
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
-    xpc_connection_cancel(serviceConnection);
-    xpc_release(serviceConnection);
-    serviceConnection = nil;
+    self.serviceConnection = NULL;
     
     xpc_release(stack);
     stack = NULL;
 }
+
+
+- (void)setUseHaskellService:(BOOL)value
+{
+    useHaskellService = !!value;
+    [self setUpService:value ? HASKELL_SERVICE : OBJC_SERVICE];
+}
+
+
+- (BOOL) useHaskellService
+{
+    return useHaskellService;
+}
+
+
+- (void)setServiceConnection:(xpc_connection_t)connection
+{
+    if (connection != serviceConnection) {
+        if (serviceConnection != NULL) {
+            xpc_connection_cancel(serviceConnection);
+            xpc_release(serviceConnection);
+        }
+        if (connection) {
+            serviceConnection = xpc_retain(connection);
+        }
+        else {
+            serviceConnection = NULL;
+        }
+    }
+}
+
+
+- (xpc_connection_t)serviceConnection
+{
+    return serviceConnection;
+}
+
 
 - (void)updateStackView
 {
@@ -77,6 +123,7 @@
     });
     [[self stackTextView] setString:stackString];
 }
+
 
 - (void)setStack:(xpc_object_t)inStack
 {
@@ -95,10 +142,13 @@
 
 - (void)sendOperatorMessage:(int64_t)operator
 {
+    xpc_connection_t connection = self.serviceConnection;
+    if (connection == NULL)  return;
+    
     xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
     xpc_dictionary_set_int64(message, "op", operator);
     xpc_dictionary_set_value(message, "stack", stack);
-    xpc_connection_send_message_with_reply(serviceConnection, message, dispatch_get_main_queue(), ^ (xpc_object_t reply) {
+    xpc_connection_send_message_with_reply(connection, message, dispatch_get_main_queue(), ^ (xpc_object_t reply) {
         xpc_type_t type = xpc_get_type(reply);
         if (type == XPC_TYPE_ERROR) {
             if (reply == XPC_ERROR_CONNECTION_INTERRUPTED) {

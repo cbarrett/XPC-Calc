@@ -307,7 +307,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"\nghc -c -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\" \"$SRCROOT/Haskell Service/HsXPC.hs\"\nghc --make -no-hs-main -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\"  -o \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH/Haskell Service\" \"$SRCROOT/Haskell Service/HsXPC.hs\" \"$SRCROOT/Haskell Service/main.c\"\n";
+			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"\nghc -c -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\" \"$SRCROOT/Haskell Service/HsXPC.hs\"\nghc --make -no-hs-main -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\"  -o \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH/$EXECUTABLE_NAME\" \"$SRCROOT/Haskell Service/HsXPC.hs\" \"$SRCROOT/Haskell Service/main.c\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

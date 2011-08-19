@@ -6,7 +6,7 @@ This is actually less insane than it sounds. Haskell and XPC actually make a goo
 - Haskell is a lazy, pure, statically-typed functional language which has a strong foreign function interface to C.
 - XPC is an IPC and daemon management library for building out-of-process, stateless services which communicate via typed, asynchronous messages.
 
-It should be fairly easy to see how these two technologies line up pretty well. 
+It should be fairly easy to see how these two technologies line up. 
 
 ## OK, so what is this?
 

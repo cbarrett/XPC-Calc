@@ -14,7 +14,7 @@
 extern void __stginit_HsXPC();
 
 static void XPC_Calc_Service_event_handler(xpc_connection_t peer) 
-{    
+{
 	// By defaults, new connections will target the default dispatch
 	// concurrent queue.
 	xpc_connection_set_event_handler(peer, ^(xpc_object_t event) {

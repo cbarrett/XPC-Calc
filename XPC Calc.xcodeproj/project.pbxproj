@@ -95,6 +95,7 @@
 				EF8DAA1F13EE163300FF10E9 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		EF8DAA1F13EE163300FF10E9 /* Products */ = {
 			isa = PBXGroup;

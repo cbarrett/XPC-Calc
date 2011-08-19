@@ -11,14 +11,19 @@
 
 @interface XPC_CalcAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
+    NSButton *lastButton;
     NSTextField *inputTextField;
     xpc_connection_t serviceConnection;
     NSTextView *stackTextView;
     xpc_object_t stack;
+	BOOL useHaskellService;
 }
 @property (assign) IBOutlet NSTextView *stackTextView;
 @property (assign) IBOutlet NSTextField *inputTextField;
 @property (assign) IBOutlet NSWindow *window;
+@property (assign) IBOutlet NSButton *lastButton;
+
+@property (nonatomic) BOOL useHaskellService;
 
 - (IBAction)push:(id)sender;
 - (IBAction)add:(id)sender;

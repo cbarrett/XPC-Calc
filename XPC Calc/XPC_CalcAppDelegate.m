@@ -171,6 +171,8 @@
 
 - (void)sendOperatorMessage:(int64_t)operator
 {
+    [self push:nil];
+    
     xpc_connection_t connection = self.serviceConnection;
     if (connection == NULL)  return;
     

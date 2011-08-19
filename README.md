@@ -31,7 +31,7 @@ All that said, XPC Calc is quite a terrible calculator. As it only supports inte
 I'm primarily focused on improving the Haskell bits, as those are the most interesting. It would be cool if a general framework for writing XPC services in Haskell could come out of this simple project.
 
 - The marshaling code dealing with XPC types should be extended to support a richer variety of types. At first brush, creating `XPCable` and `UnXPCable` typeclasses seems like a good place to start.
-- The C bits should be reduced as much as possible. In theory, the only thing that should be necessary is glue for `xpc_connection_set_event_handler` which takes a block. (Blocks are not supported in the Haskell FFI yet.)
+- The C bits should be reduced as much as possible. In theory, the only thing that should be necessary is glue for `xpc_connection_set_event_handler` which takes a block. (Blocks are not supported in the Haskell FFI yet, although there has been some interesting dicussion about how to add support.)
 - The Xcode build system is already pretty good, but it would be nice if we instead issued a single call to `ghc`, instead of two. The additional call seems necessary "prime" the stub header files needed to build the C program.
 - It appears that the `xpc_array_*` functions do not allow you to remove elements or insert elements anywhere other than the end of the list. Because of this restriction the Haskell code for implementing calculation is uglier than it should be.
 - The Objective-C version should either be changed to pure C, or use some Objective-C features. (Shared marshaling code?)

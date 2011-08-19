@@ -11,16 +11,6 @@
 #include <assert.h>
 #import "Shared.h"
 
-static xpc_object_t XPC_Calc_Service_NSArray_to_xpc_array(NSArray *inArray)
-{
-    xpc_object_t outArray = xpc_array_create(NULL, 0);
-    
-    for (NSNumber *boxedNum in inArray) {
-        xpc_array_set_int64(outArray, XPC_ARRAY_APPEND, [boxedNum integerValue]);
-    }
-    
-    return outArray;
-}
 
 static void XPC_Calc_Service_peer_event_handler(xpc_connection_t peer, xpc_object_t event) 
 {

@@ -11,6 +11,7 @@
 
 @interface XPC_CalcAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
+    NSButton *lastButton;
     NSTextField *inputTextField;
     xpc_connection_t serviceConnection;
     NSTextView *stackTextView;
@@ -20,6 +21,7 @@
 @property (assign) IBOutlet NSTextView *stackTextView;
 @property (assign) IBOutlet NSTextField *inputTextField;
 @property (assign) IBOutlet NSWindow *window;
+@property (assign) IBOutlet NSButton *lastButton;
 
 @property (nonatomic) BOOL useHaskellService;
 

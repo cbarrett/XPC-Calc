@@ -26,11 +26,23 @@
 @synthesize stackTextView;
 @synthesize inputTextField;
 @synthesize window;
+@synthesize lastButton;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     stack = xpc_array_create(NULL, 0);
     self.useHaskellService = NO;
+}
+
+
+- (void)awakeFromNib
+{
+    NSDictionary *viewDict = NSDictionaryOfVariableBindings(lastButton);
+    NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"[lastButton]-|"
+                                                                   options:0
+                                                                   metrics:nil
+                                                                     views:viewDict];
+    [self.window.contentView addConstraints:constraints];
 }
 
 

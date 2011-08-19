@@ -17,6 +17,7 @@
 @interface XPC_CalcAppDelegate ()
 
 @property (nonatomic) xpc_connection_t serviceConnection;
+@property (nonatomic) xpc_object_t stack;
 
 @end
 
@@ -30,8 +31,8 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    stack = xpc_array_create(NULL, 0);
-    self.useHaskellService = NO;
+    [self clear:nil];
+    self.useHaskellService = YES;
 }
 
 
@@ -84,9 +85,7 @@
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
     self.serviceConnection = NULL;
-    
-    xpc_release(stack);
-    stack = NULL;
+    self.stack = NULL;
 }
 
 
@@ -129,28 +128,46 @@
 - (void)updateStackView
 {
     NSMutableString *stackString = [NSMutableString string];
-    xpc_array_apply(stack, ^ (size_t idx, xpc_object_t value) {
-        [stackString insertString:[NSString stringWithFormat:@"%li\n", xpc_int64_get_value(value)] atIndex:0];
-        return (bool)true;
-    });
-    [[self stackTextView] setString:stackString];
+    if (self.stack != NULL)
+    {
+        xpc_array_apply(stack, ^bool(size_t idx, xpc_object_t value) {
+            [stackString insertString:[NSString stringWithFormat:@"%li\n", xpc_int64_get_value(value)] atIndex:0];
+            return true;
+        });
+    }
+    self.stackTextView.string = stackString;
 }
 
 
 - (void)setStack:(xpc_object_t)inStack
 {
-    stack = xpc_retain(inStack);
+    if (stack != NULL)  xpc_release(stack);
+    stack = NULL;
+    
+    if (inStack != NULL)
+    {
+        stack = xpc_retain(inStack);
+    }
+    
     [self updateStackView];
 }
 
+
+- (xpc_object_t)stack
+{
+    return stack;
+}
+
+
 - (IBAction)push:(id)sender
 {
-    if (![[[self inputTextField] stringValue] isEqualToString:@""]) {
-        xpc_array_set_int64(stack, XPC_ARRAY_APPEND, [[self inputTextField] integerValue]);
-        [[self inputTextField] setStringValue:@""];
+    if (![self.inputTextField.stringValue isEqualToString:@""]) {
+        xpc_array_set_int64(self.stack, XPC_ARRAY_APPEND, self.inputTextField.integerValue);
+        self.inputTextField.stringValue = @"";
     }
     [self updateStackView];
 }
+
 
 - (void)sendOperatorMessage:(int64_t)operator
 {
@@ -159,7 +176,7 @@
     
     xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
     xpc_dictionary_set_int64(message, "op", operator);
-    xpc_dictionary_set_value(message, "stack", stack);
+    xpc_dictionary_set_value(message, "stack", self.stack);
     xpc_connection_send_message_with_reply(connection, message, dispatch_get_main_queue(), ^ (xpc_object_t reply) {
         xpc_type_t type = xpc_get_type(reply);
         if (type == XPC_TYPE_ERROR) {
@@ -169,22 +186,25 @@
                 NSLog(@"invalid");
             }
         } else if (type == XPC_TYPE_DICTIONARY) {            
-            [self setStack:xpc_dictionary_get_value(reply, "stack")];
+            self.stack = xpc_dictionary_get_value(reply, "stack");
         }
     });
     xpc_release(message);
 
 }
 
+
 - (IBAction)add:(id)sender
 {
     [self sendOperatorMessage:OperatorAdd];
 }
 
+
 - (IBAction)subtract:(id)sender
 {
     [self sendOperatorMessage:OperatorSub];
 }
+
 
 - (IBAction)multiply:(id)sender
 {
@@ -196,10 +216,11 @@
     [self sendOperatorMessage:OperatorDiv];
 }
 
+
 - (IBAction)clear:(id)sender
 {
     xpc_object_t new_stack = xpc_array_create(NULL, 0);
-    [self setStack:new_stack];
+    self.stack = new_stack;
     xpc_release(new_stack);
 }
     

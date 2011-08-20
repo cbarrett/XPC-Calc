@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EF1B35261400671E0006438C /* XPC.hs in Resources */ = {isa = PBXBuildFile; fileRef = EF1B35251400671E0006438C /* XPC.hs */; };
 		EF8DAA2313EE163300FF10E9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF8DAA2213EE163300FF10E9 /* Cocoa.framework */; };
 		EF8DAA2D13EE163300FF10E9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EF8DAA2B13EE163300FF10E9 /* InfoPlist.strings */; };
 		EF8DAA2F13EE163300FF10E9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8DAA2E13EE163300FF10E9 /* main.m */; };
@@ -37,6 +38,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		EF1B35251400671E0006438C /* XPC.hs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = XPC.hs; sourceTree = "<group>"; };
 		EF60B56413EF43F300B4D22E /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		EF60B56513EF453600B4D22E /* HsXPC.hs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HsXPC.hs; sourceTree = "<group>"; };
 		EF8DAA1E13EE163300FF10E9 /* XPC Calc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "XPC Calc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +175,7 @@
 				EF60B56413EF43F300B4D22E /* main.c */,
 				EFEDB30F13EEFE6400430981 /* Supporting Files */,
 				EF60B56513EF453600B4D22E /* HsXPC.hs */,
+				EF1B35251400671E0006438C /* XPC.hs */,
 			);
 			path = "Haskell Service";
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 				EF8DAA2D13EE163300FF10E9 /* InfoPlist.strings in Resources */,
 				EF8DAA3313EE163300FF10E9 /* Credits.rtf in Resources */,
 				EF8DAA3913EE163400FF10E9 /* MainMenu.xib in Resources */,
+				EF1B35261400671E0006438C /* XPC.hs in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,7 +311,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"\nghc -c -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\" \"$SRCROOT/Haskell Service/HsXPC.hs\"\nghc --make -no-hs-main -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\"  -o \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH/$EXECUTABLE_NAME\" \"$SRCROOT/Haskell Service/HsXPC.hs\" \"$SRCROOT/Haskell Service/main.c\"\n";
+			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"\nghc -c -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\" \"$SRCROOT/Haskell Service/XPC.hs\" \"$SRCROOT/Haskell Service/HsXPC.hs\"\nghc --make -no-hs-main -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\"  -o \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH/$EXECUTABLE_NAME\" \"$SRCROOT/Haskell Service/XPC.hs\" \"$SRCROOT/Haskell Service/HsXPC.hs\" \"$SRCROOT/Haskell Service/main.c\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

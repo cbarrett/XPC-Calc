@@ -12,12 +12,8 @@ import Foreign.C.String
 import XPC
 
 type XPCConnection = Ptr XPC 
-type XPCType = Ptr XPC
 
 foreign export ccall hsEventHandler :: XPCConnection -> XPCObject -> IO ()
-
-foreign import ccall unsafe "xpc/xpc.h xpc_get_type"
-  xpc_get_type :: XPCObject -> XPCType
   
 foreign import ccall unsafe "xpc/xpc.h &_xpc_type_error"
   xpc_type_error :: XPCType

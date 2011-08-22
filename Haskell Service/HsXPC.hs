@@ -32,18 +32,19 @@ foreign import ccall unsafe "xpc/xpc.h xpc_dictionary_set_value"
 foreign import ccall unsafe "xpc/connection.h xpc_connection_send_message"
   xpc_connection_send_message :: XPCConnection -> XPCObject -> IO ()
 
+updateXPCDict :: (XPCable a) => XPCObject -> M.Map String a -> IO ()
+updateXPCDict x m = forM_ (M.keys m) $ \k -> do
+    withCString k $ \keyStr -> do
+    withXPC (m ! k) $ \valXPC -> do
+      xpc_dictionary_set_value x keyStr valXPC
+
 sendReply :: XPCConnection -> XPCObject -> (Int64 -> [Int64] -> [Int64]) -> IO ()
 sendReply peer eventX f = 
   let event :: (XPCable a) => M.Map String a
       event = fromXPC eventX 
-      op    = event ! "op"
-      stack = event ! "stack"
-  in do
-    withNewXPCPtr (xpc_dictionary_create_reply eventX) $ \reply -> do
-    withCString "stack" $ \stackStr -> do
-    withXPC (f op stack) $ \newStack -> do
-      xpc_dictionary_set_value reply stackStr newStack
-      xpc_connection_send_message peer reply
+  in withNewXPCPtr (xpc_dictionary_create_reply eventX) $ \reply -> do
+       updateXPCDict reply $ M.singleton "stack" $ f (event ! "op") (event ! "stack")
+       xpc_connection_send_message peer reply
 
 consumeBinary :: (Int64 -> Int64 -> Int64) -> [Int64] -> [Int64]
 consumeBinary f xs

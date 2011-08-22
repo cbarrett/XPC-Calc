@@ -6,12 +6,22 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#include "main.h"
 #include <stdio.h>
 #include "HsFFI.h"
-#include <xpc/xpc.h>
 #include "HsXPC_stub.h"
 
 extern void __stginit_HsXPC();
+
+void hsxpc_dictionary_get_keys_and_values(xpc_object_t dictionary, const char **keys, xpc_object_t *values) {    
+    __block size_t idx = 0;
+    xpc_dictionary_apply(dictionary,  ^ bool (const char *key, xpc_object_t value) {
+        keys[idx] = key;
+        values[idx] = value;
+        ++idx;
+        return true;
+    });
+}
 
 static void XPC_Calc_Service_event_handler(xpc_connection_t peer) 
 {    

@@ -5,6 +5,8 @@ module HsXPC
   ) where
 
 import Control.Monad
+import Data.Map ((!))
+import qualified Data.Map as M
 import Data.Functor
 import Foreign
 import Foreign.C.Types 
@@ -31,15 +33,17 @@ foreign import ccall unsafe "xpc/connection.h xpc_connection_send_message"
   xpc_connection_send_message :: XPCConnection -> XPCObject -> IO ()
 
 sendReply :: XPCConnection -> XPCObject -> (Int64 -> [Int64] -> [Int64]) -> IO ()
-sendReply peer event f = do
-  op <- withCString "op" $ return . fromXPC . xpc_dictionary_get_value event
-  stack <- withCString "stack" $ return . fromXPC . xpc_dictionary_get_value event
-
-  withNewXPCPtr (xpc_dictionary_create_reply event) $ \reply -> do
-  withCString "stack" $ \stackStr -> do
-  withXPC (f op stack) $ \newStack -> do
-    xpc_dictionary_set_value reply stackStr newStack
-    xpc_connection_send_message peer reply
+sendReply peer eventX f = 
+  let event :: (XPCable a) => M.Map String a
+      event = fromXPC eventX 
+      op    = event ! "op"
+      stack = event ! "stack"
+  in do
+    withNewXPCPtr (xpc_dictionary_create_reply eventX) $ \reply -> do
+    withCString "stack" $ \stackStr -> do
+    withXPC (f op stack) $ \newStack -> do
+      xpc_dictionary_set_value reply stackStr newStack
+      xpc_connection_send_message peer reply
 
 consumeBinary :: (Int64 -> Int64 -> Int64) -> [Int64] -> [Int64]
 consumeBinary f xs

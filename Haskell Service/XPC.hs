@@ -1,4 +1,4 @@
-{-# LANGUAGE EmptyDataDecls, ForeignFunctionInterface, FlexibleInstances, TypeSynonymInstances #-}
+{-# LANGUAGE EmptyDataDecls, ForeignFunctionInterface, FlexibleInstances #-}
 
 module XPC
   ( Int64

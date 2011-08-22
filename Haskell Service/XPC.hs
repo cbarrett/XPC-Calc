@@ -77,10 +77,9 @@ instance (XPCable a) => XPCable [a] where
           len = xpc_array_get_count x
 
   withXPC xs f = allocaArray (length xs) $ \buf -> do
-      mapM (\(idx, p) -> p buf idx) (zip idxRange pokes)
+      zipWithM (\x idx -> withXPC x $ pokeElemOff buf idx) xs idxRange
       withNewXPCPtr (xpc_array_create buf (fromIntegral $ length xs)) f
     where idxRange = [0 .. length xs - 1]
-          pokes = (\x -> (\buf idx -> withXPC x (pokeElemOff buf idx))) <$> xs
 
 test :: [Int64] -> IO [Int64]
 test xs = withXPC xs (return . fromXPC)

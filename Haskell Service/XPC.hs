@@ -61,7 +61,7 @@ foreign import ccall unsafe "xpc/xpc.h xpc_int64_create"
   xpc_int64_create :: Int64 -> IO XPCObject
 
 foreign import ccall unsafe "xpc/xpc.h xpc_int64_get_value"
-  xpc_int64_get_value :: XPCObject -> Int64
+  xpc_int64_get_value :: XPCObject -> IO Int64
 
 foreign import ccall unsafe "xpc/xpc.h &xpc_release"
   finalizerXPCRelease :: FinalizerPtr XPC
@@ -101,7 +101,7 @@ class XPCable a where
 
 -- xpc_int64
 instance XPCable Int64 where
-  fromXPC x | rightType = return $ xpc_int64_get_value x
+  fromXPC x | rightType = xpc_int64_get_value x
             | otherwise = error $ printf "fromXPC: invalid type. Expecting %s (int64), got %s" (show xpc_type_int64) (show $ xpc_get_type x)
     where rightType = xpc_get_type x == xpc_type_int64
   withXPC i = withNewXPCPtr (xpc_int64_create i)

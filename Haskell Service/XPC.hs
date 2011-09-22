@@ -17,11 +17,9 @@ import Control.Monad
 import Data.Functor
 import Data.Int (Int64)
 import qualified Data.Map as M
-import Debug.Trace
 import Foreign
 import Foreign.C.Types 
 import Foreign.C.String
-import qualified Foreign.Concurrent as C
 import Foreign.Storable
 import Text.Printf
 
@@ -93,9 +91,8 @@ withForeignPtrArray c f = mallocForeignPtrArray c >>= \p -> withForeignPtr p f
 
 withNewXPCPtr :: IO XPCObject -> (XPCObject -> IO a) -> IO a
 withNewXPCPtr xpcObjIO f = do
-  x <- xpcObjIO 
-  fp <- C.newForeignPtr x (xpc_release x)
-  C.addForeignPtrFinalizer fp $ trace (printf "releasing %s" (show x)) $ return ()
+  x  <- xpcObjIO 
+  fp <- newForeignPtr finalizerXPCRelease x
   withForeignPtr fp f
 
 class XPCable a where
@@ -104,45 +101,42 @@ class XPCable a where
 
 -- xpc_int64
 instance XPCable Int64 where
-  fromXPC x = trace (printf "int64: %s" (xpcDescription x)) (fromXPC' x)
-    where fromXPC' x | rightType = xpc_int64_get_value x
-              | otherwise = error $ printf "fromXPC: invalid type. Expecting %s (int64), got %s" (show xpc_type_int64) (show $ xpc_get_type x)
-            where rightType = xpc_get_type x == xpc_type_int64
+  fromXPC x | rightType = xpc_int64_get_value x
+            | otherwise = error $ printf "fromXPC: invalid type. Expecting %s (int64), got %s" (show xpc_type_int64) (show $ xpc_get_type x)
+    where rightType = xpc_get_type x == xpc_type_int64
   withXPC i = withNewXPCPtr (xpc_int64_create i)
 
 -- xpc_array
 instance XPCable a => XPCable [a] where
-  fromXPC x = trace (printf "array: %s" (xpcDescription x)) (fromXPC' x)
-    where fromXPC' x | rightType = fromXPC . xpc_array_get_value x <$> idxRange
-              | otherwise = error $ printf "fromXPC: invalid type. Expecting %s (array), got %s" (show xpc_type_array) (show $ xpc_get_type x)
-            where rightType = xpc_get_type x == xpc_type_array
-                  idxRange | len == 0  = []
-                           | otherwise = [0 .. len - 1]
-                  len = xpc_array_get_count x
+  fromXPC x | rightType = fromXPC . xpc_array_get_value x <$> idxRange
+            | otherwise = error $ printf "fromXPC: invalid type. Expecting %s (array), got %s" (show xpc_type_array) (show $ xpc_get_type x)
+    where rightType = xpc_get_type x == xpc_type_array
+          idxRange | len == 0  = []
+                   | otherwise = [0 .. len - 1]
+          len = xpc_array_get_count x
 
   withXPC xs f = 
     withNewXPCPtr (xpc_array_create nullPtr 0) $ \arr -> do
-     forM xs $ \v -> withXPC v $ \value -> xpc_array_append_value arr value
+     forM xs $ \x -> withXPC x $ \value -> xpc_array_append_value arr value
      f arr
     where idxRange = [0 .. length xs - 1]
 
 
 -- xpc_dict
 instance XPCable a => XPCable (M.Map String a) where
-  fromXPC x = trace (printf "dict: %s" (xpcDescription x)) (fromXPC' x)
-    where fromXPC' x | rightType = unsafePerformIO go
-              | otherwise = error $ printf "fromXPC: invalid type. Expecting %s (dict), got %s" (show xpc_type_dictionary) (show $ xpc_get_type x)
-            where rightType = trace (printf "type of %s is %s" (show x) (show $ xpc_get_type x)) $ xpc_get_type x == xpc_type_dictionary
-                  go = withForeignPtrArray count $ \keysPtr -> do
-                       withForeignPtrArray count $ \valuesPtr -> do
-                         hsxpc_dictionary_get_keys_and_values x keysPtr valuesPtr
-                         keys <- mapM peekCString =<< peekArray count keysPtr
-                         valPtrs <- peekArray count valuesPtr
-                         forM valPtrs $ \y -> trace (printf "retaining %s" (show y)) (xpc_retain y)
-                         let values = fromXPC <$> valPtrs
-                         forM valPtrs $ \y -> trace (printf "releasing %s" (show y)) (xpc_release y)
-                         return $ M.fromList $ zip keys values
-                  count = fromIntegral $ xpc_dictionary_get_count x
+  fromXPC x | rightType = unsafePerformIO go
+            | otherwise = error $ printf "fromXPC: invalid type. Expecting %s (dict), got %s" (show xpc_type_dictionary) (show $ xpc_get_type x)
+    where rightType = xpc_get_type x == xpc_type_dictionary
+          go = withForeignPtrArray count $ \keysPtr -> do
+               withForeignPtrArray count $ \valuesPtr -> do
+                 hsxpc_dictionary_get_keys_and_values x keysPtr valuesPtr
+                 keys <- mapM peekCString =<< peekArray count keysPtr
+                 valPtrs <- peekArray count valuesPtr
+                 forM valPtrs xpc_retain
+                 let values = fromXPC <$> valPtrs
+                 forM valPtrs xpc_release
+                 return $ M.fromList $ zip keys values
+          count = fromIntegral $ xpc_dictionary_get_count x
 
   withXPC m f =
     withNewXPCPtr (xpc_dictionary_create nullPtr nullPtr 0) $ \dict -> do

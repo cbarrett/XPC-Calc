@@ -11,6 +11,8 @@ module XPC
   , xpc_type_int64
   , xpc_type_array
   , xpc_type_dictionary
+  , xpc_array_get_value
+  , xpc_array_get_count
   ) where
 
 import Control.Monad

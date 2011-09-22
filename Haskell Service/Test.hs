@@ -48,10 +48,11 @@ data AnyXPC = XPCInt64 Int64
 instance Arbitrary AnyXPC where
   arbitrary = sized arbitrary'
 
-arbitrary' 0 = scalars
-arbitrary' n = frequency [ (length scalars', scalars)
-                         , (1, liftM XPCList listItems)
-                         , (1, liftM (XPCMap . M.mapKeys unNoNul . M.fromList) assocListItems)
+--arbitrary' 0 = scalars
+arbitrary' 0 = return $ XPCList []
+arbitrary' n = frequency --[ (length scalars', scalars)
+                         [ (1, liftM XPCList listItems)
+                         --, (1, liftM (XPCMap . M.mapKeys unNoNul . M.fromList) assocListItems)
                          ]
   where listItems = do len <- choose (0, n)
                        replicateM len $ arbitrary' (sqrtDown n)
@@ -82,6 +83,15 @@ instance XPCable AnyXPC where
   withXPC (XPCList   xs) = withXPC xs
   withXPC (XPCMap     m) = withXPC m
 
+fromXPCListM :: XPCObject -> IO AnyXPC
+fromXPCListM x | rightType = XPCList <$> (fromXPCListM `mapM` (xpc_array_get_value x <$> idxRange))  
+               | otherwise = error $ printf "fromXPC: invalid type. Expecting %s (array), got %s" (show xpc_type_array) (show $ xpc_get_type x)
+  where rightType = xpc_get_type x == xpc_type_array
+        idxRange | len == 0  = []
+                 | otherwise = [0 .. len - 1]
+        len = xpc_array_get_count x
+
+
 prop_roundtrip :: AnyXPC -> Property
 prop_roundtrip x = morallyDubiousIOProperty $ do
                      putStrLn $ "Trying: " ++ (show x)
@@ -91,5 +101,11 @@ prop_roundtrip x = morallyDubiousIOProperty $ do
 roundtrip :: (XPCable a) => a -> IO a
 roundtrip x = withXPC x (return . fromXPC)
 
+prop_listroundtrip :: AnyXPC -> Property
+prop_listroundtrip x = morallyDubiousIOProperty $ do
+                         putStrLn $ "Trying: " ++ (show x)
+                         x' <- withXPC x fromXPCListM
+                         return (x == x')
+
 main = hSetBuffering stdout NoBuffering >> hSetBuffering stderr NoBuffering >>
-       verboseCheck prop_roundtrip
+       verboseCheck prop_listroundtrip

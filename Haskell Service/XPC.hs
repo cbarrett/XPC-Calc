@@ -131,10 +131,7 @@ instance XPCable a => XPCable (M.Map String a) where
                withForeignPtrArray count $ \valuesPtr -> do
                  hsxpc_dictionary_get_keys_and_values x keysPtr valuesPtr
                  keys <- mapM peekCString =<< peekArray count keysPtr
-                 valPtrs <- peekArray count valuesPtr
-                 forM valPtrs xpc_retain
-                 let values = fromXPC <$> valPtrs
-                 forM valPtrs xpc_release
+                 values <- map fromXPC <$> peekArray count valuesPtr
                  return $ M.fromList $ zip keys values
           count = fromIntegral $ xpc_dictionary_get_count x
 

@@ -48,9 +48,7 @@ data AnyXPC = XPCInt64 Int64
 instance Arbitrary AnyXPC where
   arbitrary = sized go
     where go 0 = oneof scalars
-          go n = frequency $ mkFrq <$> [scalars, vectors]
-          mkFrq x = (length x, oneof x)
-
+          go n = oneof $ concat [scalars, vectors]
 scalars = [ liftM XPCInt64 arbitrary
            --, liftM XPCString arbitrary
           ]

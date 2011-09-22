@@ -11,8 +11,6 @@ module XPC
   , xpc_type_int64
   , xpc_type_array
   , xpc_type_dictionary
-  , xpc_array_get_value
-  , xpc_array_get_count
   ) where
 
 import Control.Monad
@@ -98,19 +96,19 @@ withNewXPCPtr xpcObjIO f = do
   withForeignPtr fp f
 
 class XPCable a where
-  fromXPC :: XPCObject -> a
+  fromXPC :: XPCObject -> IO a
   withXPC :: a -> (XPCObject -> IO b) -> IO b
 
 -- xpc_int64
 instance XPCable Int64 where
-  fromXPC x | rightType = xpc_int64_get_value x
+  fromXPC x | rightType = return $ xpc_int64_get_value x
             | otherwise = error $ printf "fromXPC: invalid type. Expecting %s (int64), got %s" (show xpc_type_int64) (show $ xpc_get_type x)
     where rightType = xpc_get_type x == xpc_type_int64
   withXPC i = withNewXPCPtr (xpc_int64_create i)
 
 -- xpc_array
 instance XPCable a => XPCable [a] where
-  fromXPC x | rightType = fromXPC . xpc_array_get_value x <$> idxRange
+  fromXPC x | rightType = fromXPC `mapM` (xpc_array_get_value x <$> idxRange)
             | otherwise = error $ printf "fromXPC: invalid type. Expecting %s (array), got %s" (show xpc_type_array) (show $ xpc_get_type x)
     where rightType = xpc_get_type x == xpc_type_array
           idxRange | len == 0  = []
@@ -126,14 +124,14 @@ instance XPCable a => XPCable [a] where
 
 -- xpc_dict
 instance XPCable a => XPCable (M.Map String a) where
-  fromXPC x | rightType = unsafePerformIO go
+  fromXPC x | rightType = go
             | otherwise = error $ printf "fromXPC: invalid type. Expecting %s (dict), got %s" (show xpc_type_dictionary) (show $ xpc_get_type x)
     where rightType = xpc_get_type x == xpc_type_dictionary
           go = withForeignPtrArray count $ \keysPtr -> do
                withForeignPtrArray count $ \valuesPtr -> do
                  hsxpc_dictionary_get_keys_and_values x keysPtr valuesPtr
                  keys <- mapM peekCString =<< peekArray count keysPtr
-                 values <- map fromXPC <$> peekArray count valuesPtr
+                 values <- mapM fromXPC =<< peekArray count valuesPtr
                  return $ M.fromList $ zip keys values
           count = fromIntegral $ xpc_dictionary_get_count x
 
@@ -144,7 +142,7 @@ instance XPCable a => XPCable (M.Map String a) where
       f dict
 
 testArr :: [Int64] -> IO [Int64]
-testArr xs = withXPC xs (return . fromXPC)
+testArr xs = withXPC xs fromXPC
 
 testDict :: M.Map String Int64 -> IO (M.Map String Int64)
-testDict m = withXPC m (return . fromXPC)
+testDict m = withXPC m fromXPC

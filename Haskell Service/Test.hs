@@ -46,27 +46,25 @@ data AnyXPC = XPCInt64 Int64
             deriving (Show, Eq)
 
 instance Arbitrary AnyXPC where
-  arbitrary = sized arbitrary'
+  arbitrary = sized go
+    where go 0 = oneof scalars
+          go n = frequency $ mkFrq <$> [scalars, vectors]
+          mkFrq x = (length x, oneof x)
 
-arbitrary' 0 = scalars
-arbitrary' n = frequency [ (length scalars', scalars)
-                         , (1, liftM XPCList listItems)
-                         , (1, liftM (XPCMap . M.mapKeys unNoNul . M.fromList) assocListItems)
-                         ]
-  where listItems = do len <- choose (0, n)
-                       replicateM len $ arbitrary' (sqrtDown n)
-        assocListItems :: Gen [(NoNulStr, AnyXPC)]
-        assocListItems = do len <- choose (0, n)
-                            keys <- vector len
-                            vals <- replicateM len $ arbitrary' (sqrtDown n)
-                            return $ zip keys vals
-    
-        sqrtDown = floor . sqrt . fromIntegral
-          
-scalars  = oneof scalars'
-scalars' = [ liftM XPCInt64 arbitrary
+scalars = [ liftM XPCInt64 arbitrary
            --, liftM XPCString arbitrary
-           ]
+          ]
+vectors = [ liftM XPCList listItems
+          , liftM (XPCMap . M.mapKeys unNoNul . M.fromList) assocListItems
+          ]
+  where sqrtDown = floor . sqrt . fromIntegral
+        listItems = sized $ \n -> do len <- choose (0, n)
+                                     replicateM len $ resize (n `div` 2) arbitrary
+        assocListItems :: Gen [(NoNulStr, AnyXPC)]
+        assocListItems = sized $ \n -> do len <- choose (0, n)
+                                          keys <- vector len
+                                          vals <- replicateM len $ resize (n `div` 2) arbitrary
+                                          return $ zip keys vals
 
 instance XPCable AnyXPC where
   fromXPC x 
@@ -84,7 +82,7 @@ instance XPCable AnyXPC where
 
 prop_roundtrip :: AnyXPC -> Property
 prop_roundtrip x = morallyDubiousIOProperty $ do
-                     putStrLn $ "Trying: " ++ (show x)
+                     --putStrLn $ "Trying: " ++ (show x)
                      x' <- roundtrip x
                      return (x == x')
 
@@ -92,4 +90,4 @@ roundtrip :: (XPCable a) => a -> IO a
 roundtrip x = withXPC x fromXPC
 
 main = hSetBuffering stdout NoBuffering >> hSetBuffering stderr NoBuffering >>
-       verboseCheck prop_roundtrip
+       quickCheck prop_roundtrip

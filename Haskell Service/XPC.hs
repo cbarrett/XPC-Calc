@@ -95,6 +95,7 @@ withNewXPCPtr xpcObjIO f = do
   fp <- newForeignPtr finalizerXPCRelease x
   withForeignPtr fp f
 
+--class Data a => XPCable a where
 class XPCable a where
   fromXPC :: XPCObject -> IO a
   withXPC :: a -> (XPCObject -> IO b) -> IO b

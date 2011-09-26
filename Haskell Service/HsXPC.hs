@@ -1,8 +1,6 @@
 {-# LANGUAGE ForeignFunctionInterface #-}
 
-module HsXPC
-  ( hsEventHandler
-  ) where
+module Main where
 
 import Control.Monad
 import Data.Map ((!))
@@ -29,8 +27,23 @@ foreign import ccall unsafe "xpc/xpc.h xpc_dictionary_get_value"
 foreign import ccall unsafe "xpc/xpc.h xpc_dictionary_set_value"
   xpc_dictionary_set_value :: XPCObject -> CString -> XPCObject -> IO ()
 
+foreign import ccall safe "xpc/xpc.h xpc_connection_resume"
+  xpc_connection_resume :: XPCConnection -> IO ()
+
 foreign import ccall unsafe "xpc/connection.h xpc_connection_send_message"
   xpc_connection_send_message :: XPCConnection -> XPCObject -> IO ()
+
+foreign import ccall safe "main.h hsxpc_connection_set_event_handler_f"
+  hsxpc_connection_set_event_handler_f :: XPCConnection -> FunPtr (XPCObject -> IO ()) -> IO ()
+
+foreign import ccall safe "xpc/xpc.h xpc_main"
+  xpc_main :: FunPtr (XPCConnection -> IO ()) -> IO ()
+
+foreign import ccall "wrapper"
+  mkConnectionHandler :: (XPCConnection -> IO ()) -> IO (FunPtr (XPCConnection -> IO ()))
+  
+foreign import ccall "wrapper"
+  mkEventHandler :: (XPCObject -> IO ()) -> IO (FunPtr (XPCObject -> IO ()))
 
 updateXPCDict :: (XPCable a) => XPCObject -> M.Map String a -> IO ()
 updateXPCDict x m = forM_ (M.keys m) $ \k -> do
@@ -41,10 +54,24 @@ updateXPCDict x m = forM_ (M.keys m) $ \k -> do
 sendReply :: XPCConnection -> XPCObject -> (Int64 -> [Int64] -> [Int64]) -> IO ()
 sendReply peer eventX f = 
   let event :: (XPCable a) => M.Map String a
-      event = fromXPC eventX 
+      event = unsafePerformIO $ fromXPC eventX -- welp
   in withNewXPCPtr (xpc_dictionary_create_reply eventX) $ \reply -> do
        updateXPCDict reply $ M.singleton "stack" $ f (event ! "op") (event ! "stack")
        xpc_connection_send_message peer reply
+
+{-
+look :: (XPCable a, Typeable b) => M.Map String a -> String -> b -> b
+look m k d = d `fromMaybe` something (Nothing `mkQ` q) m
+  where q (k', v') | k == k'   = Just v'
+                   | otherwise = Nothing
+
+sendReply :: XPCConnection -> XPCObject -> (Int64 -> [Int64] -> [Int64]) -> IO ()
+sendReply peer eventX f = 
+  withNewXPCPtr (xpc_dictionary_create_reply eventX) $ \reply -> do
+    event <- fromXPC eventX
+    updateXPCDict reply $ M.singleton "stack" $ f (look event "op" 0) (look event "stack" [])
+    xpc_connection_send_message peer reply
+-}
 
 consumeBinary :: (Int64 -> Int64 -> Int64) -> [Int64] -> [Int64]
 consumeBinary f xs
@@ -66,3 +93,10 @@ hsEventHandler peer event =
   else do
     sendReply peer event calc
   where eventType = xpc_get_type event
+
+main = do
+  c <- mkConnectionHandler $ \peer -> do
+         e <- mkEventHandler (hsEventHandler peer)
+         hsxpc_connection_set_event_handler_f peer e
+         xpc_connection_resume peer
+  xpc_main c

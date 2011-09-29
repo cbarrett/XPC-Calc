@@ -27,7 +27,7 @@ data XPC
 type XPCObject = Ptr XPC
 type XPCType = Ptr XPC
 
-foreign import ccall unsafe "main.h hsxpc_dictionary_get_keys_and_values"
+foreign import ccall unsafe "util.h hsxpc_dictionary_get_keys_and_values"
   hsxpc_dictionary_get_keys_and_values :: XPCObject -> Ptr CString -> Ptr XPCObject -> IO ()
 
 foreign import ccall unsafe "xpc/xpc.h xpc_array_append_value"
@@ -81,8 +81,8 @@ foreign import ccall unsafe "xpc/xpc.h &_xpc_type_dictionary"
 foreign import ccall unsafe "xpc/xpc.h &_xpc_type_int64"
   xpc_type_int64 :: XPCType
 
-xpcDescription :: XPCObject -> String
-xpcDescription x = unsafePerformIO $ do
+xpcDescription :: XPCObject -> IO String
+xpcDescription x = do
   fp <- newForeignPtr finalizerFree (xpc_copy_description x)
   withForeignPtr fp peekCString
 
@@ -103,7 +103,7 @@ class XPCable a where
 -- xpc_int64
 instance XPCable Int64 where
   fromXPC x | rightType = xpc_int64_get_value x
-            | otherwise = error $ printf "fromXPC: invalid type. Expecting %s (int64), got %s" (show xpc_type_int64) (show $ xpc_get_type x)
+            | otherwise = error $ printf "fromXPC: invalid type for %s. Expecting %s (int64), got %s" (show x) (show xpc_type_int64) (show $ xpc_get_type x)
     where rightType = xpc_get_type x == xpc_type_int64
   withXPC i = withNewXPCPtr (xpc_int64_create i)
 

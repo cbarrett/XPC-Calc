@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EF1B35261400671E0006438C /* XPC.hs in Resources */ = {isa = PBXBuildFile; fileRef = EF1B35251400671E0006438C /* XPC.hs */; };
+		EF813CAA1434FC8200C73A3F /* Main.hs in Resources */ = {isa = PBXBuildFile; fileRef = EF813CA91434FC8200C73A3F /* Main.hs */; };
 		EF8DAA2313EE163300FF10E9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF8DAA2213EE163300FF10E9 /* Cocoa.framework */; };
 		EF8DAA2D13EE163300FF10E9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EF8DAA2B13EE163300FF10E9 /* InfoPlist.strings */; };
 		EF8DAA2F13EE163300FF10E9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EF8DAA2E13EE163300FF10E9 /* main.m */; };
@@ -39,8 +40,9 @@
 
 /* Begin PBXFileReference section */
 		EF1B35251400671E0006438C /* XPC.hs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = XPC.hs; sourceTree = "<group>"; };
-		EF60B56413EF43F300B4D22E /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		EF60B56513EF453600B4D22E /* HsXPC.hs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HsXPC.hs; sourceTree = "<group>"; };
+		EF813CA71434FC3B00C73A3F /* util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = util.c; sourceTree = "<group>"; };
+		EF813CA81434FC3B00C73A3F /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
+		EF813CA91434FC8200C73A3F /* Main.hs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Main.hs; sourceTree = "<group>"; };
 		EF8DAA1E13EE163300FF10E9 /* XPC Calc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "XPC Calc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF8DAA2213EE163300FF10E9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		EF8DAA2513EE163300FF10E9 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -172,10 +174,11 @@
 		EFEDB30E13EEFE6400430981 /* Haskell Service */ = {
 			isa = PBXGroup;
 			children = (
-				EF60B56413EF43F300B4D22E /* main.c */,
-				EFEDB30F13EEFE6400430981 /* Supporting Files */,
-				EF60B56513EF453600B4D22E /* HsXPC.hs */,
+				EF813CA91434FC8200C73A3F /* Main.hs */,
 				EF1B35251400671E0006438C /* XPC.hs */,
+				EF813CA71434FC3B00C73A3F /* util.c */,
+				EF813CA81434FC3B00C73A3F /* util.h */,
+				EFEDB30F13EEFE6400430981 /* Supporting Files */,
 			);
 			path = "Haskell Service";
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFEDB31313EEFE6400430981 /* InfoPlist.strings in Resources */,
+				EF813CAA1434FC8200C73A3F /* Main.hs in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,7 +315,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"\nghc -c -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\" \"$SRCROOT/Haskell Service/XPC.hs\" \"$SRCROOT/Haskell Service/HsXPC.hs\"\nghc --make -no-hs-main -outputdir \"$DERIVED_FILES_DIR\" \"-i$DERIVED_FILES_DIR\"  -o \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH/$EXECUTABLE_NAME\" \"$SRCROOT/Haskell Service/XPC.hs\" \"$SRCROOT/Haskell Service/HsXPC.hs\" \"$SRCROOT/Haskell Service/main.c\"\n";
+			shellScript = "mkdir -p \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH\"\nghc -v --make \"-i$SRCROOT/Haskell Service/\" -outputdir \"$DERIVED_FILES_DIR\" -o \"$BUILT_PRODUCTS_DIR/$EXECUTABLE_FOLDER_PATH/$EXECUTABLE_NAME\" \"$SRCROOT/Haskell Service/Main.hs\" \"$SRCROOT/Haskell Service/util.c\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

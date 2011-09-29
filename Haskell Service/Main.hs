@@ -1,4 +1,4 @@
-{-# LANGUAGE ForeignFunctionInterface #-}
+{-# LANGUAGE ForeignFunctionInterface, ScopedTypeVariables #-}
 
 module Main where
 
@@ -52,26 +52,13 @@ updateXPCDict x m = forM_ (M.keys m) $ \k -> do
       xpc_dictionary_set_value x keyStr valXPC
 
 sendReply :: XPCConnection -> XPCObject -> (Int64 -> [Int64] -> [Int64]) -> IO ()
-sendReply peer eventX f = 
-  let event :: (XPCable a) => M.Map String a
-      event = unsafePerformIO $ fromXPC eventX -- welp
-  in withNewXPCPtr (xpc_dictionary_create_reply eventX) $ \reply -> do
-       updateXPCDict reply $ M.singleton "stack" $ f (event ! "op") (event ! "stack")
-       xpc_connection_send_message peer reply
-
-{-
-look :: (XPCable a, Typeable b) => M.Map String a -> String -> b -> b
-look m k d = d `fromMaybe` something (Nothing `mkQ` q) m
-  where q (k', v') | k == k'   = Just v'
-                   | otherwise = Nothing
-
-sendReply :: XPCConnection -> XPCObject -> (Int64 -> [Int64] -> [Int64]) -> IO ()
-sendReply peer eventX f = 
+sendReply peer eventX f = do
+  -- So gross, but this will be fixed eventually.
+  (eventInt64 :: M.Map String Int64) <- fromXPC eventX
+  (eventArray :: M.Map String [Int64]) <- fromXPC eventX
   withNewXPCPtr (xpc_dictionary_create_reply eventX) $ \reply -> do
-    event <- fromXPC eventX
-    updateXPCDict reply $ M.singleton "stack" $ f (look event "op" 0) (look event "stack" [])
+    updateXPCDict reply $ M.singleton "stack" $ f (eventInt64 ! "op") (eventArray ! "stack")
     xpc_connection_send_message peer reply
--}
 
 consumeBinary :: (Int64 -> Int64 -> Int64) -> [Int64] -> [Int64]
 consumeBinary f xs
